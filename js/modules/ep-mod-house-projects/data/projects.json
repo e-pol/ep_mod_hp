@@ -1,0 +1,39 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "project_list" : [
+    {
+      "id"        : "14009",
+      "path"      : "data/projects/15001",
+      "title"     : "ПБ-14.009",
+      "type"      : "house",
+      "tech"      : "laften",
+      "area"      : 90,
+      "floors"    : 1,
+      "realized"  : "2015-январь",
+      "thumb_img" : "data/projects/15001/img/project_pb-16_001.jpg"
+    },
+    {
+      "id"        : "15001",
+      "path"      : "data/projects/15001",
+      "title"     : "ПБ-15.001",
+      "type"      : "house",
+      "tech"      : "profiled-beam",
+      "area"      : 120,
+      "floors"    : 1,
+      "realized"  : "2015-июнь",
+      "thumb_img" : "data/projects/15001/img/project_pb-16_001.jpg"
+    },
+    {
+      "id"        : "15002",
+      "path"      : "data/projects/15002",
+      "title"     : "ПБ-15.002",
+      "type"      : "house",
+      "tech"      : "laften",
+      "area"      : 180,
+      "floors"    : 2,
+      "realized"  : "2015-август",
+      "thumb_img" : "data/projects/project-15002/img/project_pb-16_001.jpg"
+    }
+  ]
+}
