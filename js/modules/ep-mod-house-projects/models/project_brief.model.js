@@ -15,30 +15,35 @@
  */
 
 define([
-  'backbone'
-], function ( Backbone ) {
+  'backbone',
+  'ep_mod_hp/models/abstract.model'
+], function ( Backbone, AbstractModel ) {
 
   "use strict";
 
 
   // ---------------------- BEGIN MODULE SCOPE VARIABLES --------------------
 
-  var ProjectsBriefModel;
+  var
+    stateMap = {
+      lang : 'ru'
+    },
+
+    ProjectsBriefModel;
 
   // ----------------------- END MODULES SCOPE VARIABLES --------------------
 
 
   // ------------------------ BEGIN MODULE CONSTRUCTORS ---------------------
 
-  ProjectsBriefModel = Backbone.Model.extend({
-    classId : 'EP_MOD_HP_PROJECT_BRIEF_MODEL',
+  ProjectsBriefModel = AbstractModel.extend({
+    classId    : 'EP_MOD_HP_PROJECT_BRIEF_MODEL',
+
     initialize : function () {
-
-      // ------------ BEGIN DEVELOP ONLY -------------
-      console.log( this.classId + ' initiated...' );
-      // ------------- END DEVELOP ONLY --------------
-
+      /*this.setProjectKeyName();*/
+      this.setValueNames();
     }
+
   });
 
   // ------------------------ END MODULE CONSTRUCTORS ----------------------

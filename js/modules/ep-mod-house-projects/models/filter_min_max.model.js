@@ -15,8 +15,9 @@
  */
 
 define([
-  'backbone'
-], function ( Backbone ) {
+  'backbone',
+  'ep_mod_hp/models/abstract.model'
+], function ( Backbone, AbstractModel ) {
 
   "use strict";
 
@@ -30,13 +31,10 @@ define([
 
   // ------------------------ BEGIN MODULE CONSTRUCTORS ---------------------
 
-  FilterMinMaxModel = Backbone.Model.extend({
+  FilterMinMaxModel = AbstractModel.extend({
     classId : 'EP_MOD_HP_FILTER_MIN_MAX_MODEL',
+    
     initialize : function () {
-
-      // ------------ BEGIN DEVELOP ONLY -------------
-      console.log( this.classId + ' initiated...' );
-      // ------------- END DEVELOP ONLY --------------
 
     }
   });

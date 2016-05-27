@@ -1,0 +1,16 @@
+{
+  "ru" : {
+    "key_name" : {
+      "area"       : "площадь",
+      "floors"     : "этажи",
+      "type"       : "тип",
+      "tech"       : "технология"
+    },
+    "value_name" : {
+      "house"         : "дом",
+      "bath-house"    : "баня",
+      "profiled-beam" : "профилированный брус",
+      "laften"        : "лафет"
+    }
+  }
+}

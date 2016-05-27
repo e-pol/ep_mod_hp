@@ -15,8 +15,9 @@
  */
 
 define([
-  'backbone'
-], function ( Backbone ) {
+  'backbone',
+  'ep_mod_hp/models/abstract.model'
+], function ( Backbone, AbstractModel ) {
 
   "use strict";
 
@@ -30,15 +31,18 @@ define([
 
   // ------------------------ BEGIN MODULE CONSTRUCTORS ---------------------
 
-  FilterSimpleModel = Backbone.Model.extend({
+  FilterSimpleModel = AbstractModel.extend({
     classId : 'EP_MOD_HP_FILTER_SIMPLE_MODEL',
-    initialize : function () {
 
-      // ------------ BEGIN DEVELOP ONLY -------------
-      console.log( this.classId + ' initiated...' );
-      // ------------- END DEVELOP ONLY --------------
+    initialize : function () {
+      this.setFilterKeyName();
+      this.setFilterValueNames();
+    },
+
+    validate : function () {
 
     }
+
   });
 
   // ------------------------ END MODULE CONSTRUCTORS ----------------------

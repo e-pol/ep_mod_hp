@@ -46,19 +46,25 @@ define([
     template : _.template( mainTemplate ),
 
     initialize : function() {
+      this.$el.addClass('container');
+
       this.render();
 
       this.projectsView = new ProjectsView({
         el : this.$( configMap.container.projectsView )
       });
 
-      // ------------ BEGIN DEVELOP ONLY -------------
-      console.log( this.classId + ' initialed...' );
-      // ------------- END DEVELOP ONLY --------------
+      this.listenTo( this.projectsView, 'requestDetailedProject',
+        this.onDetailedProjectRequest );
     },
 
     render : function () {
       this.$el.html( this.template );
+    },
+
+    onDetailedProjectRequest : function ( data ) {
+      console.log( '(' + this.classId + ') Project id = | ' + data
+        + ' | requested' );
     }
 
   });

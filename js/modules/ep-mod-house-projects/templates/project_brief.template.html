@@ -1,0 +1,11 @@
+<a href="#<%= id %>">
+  <img class="img-responsive" src="js/modules/ep-mod-house-projects/data/projects/<%= id %>/img/<%= thumb_img %>">
+  <h4 class="text-center">Проект <%=title %></h4>
+  <span class="text-center"><%= value_name[ type ] %></span><br/>
+  <span class="text-center"><%= area %> м<sup>2</sup></span><br/>
+  <span class="text-center"><%= floors %>
+    <%= floors === 1 ? 'этаж' : 'этажа' %>
+  </span><br/>
+  <span class="text-center"><%= value_name[ tech ] %></span><br/>
+  <span class="text-center"><%= realized %></span><br/>
+</a>

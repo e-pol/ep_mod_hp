@@ -34,15 +34,55 @@ define([
 
   FiltersCollection = Backbone.Collection.extend({
     classId : 'EP_MOD_HP_FILTERS_COLLECTION',
+
     initialize : function( models, init_data ) {
 
-      // ------------ BEGIN DEVELOP ONLY -------------
-      new FilterSimpleModel();
-      new FilterMinMaxModel();
-      console.log( this.classId + ' initiated...' );
-      // ------------- END DEVELOP ONLY --------------
+      this.addFilters( init_data.filter_list );
+    },
 
+    // Begin Collection method /addFilters/
+    //
+    // Example   : collection.addFilters( <JSON> )
+    // Purpose   : populates collection with models created from JSON
+    // Arguments :
+    //   * filter_list - array with filters data (JSON)
+    // Action    :
+    //   * iterate through the list of filters
+    //     and add each of them to collection
+    // Return    : none
+    // Throws    : none
+    //
+    addFilters : function ( filter_list ) {
+      filter_list.forEach( function( filter_data ) {
+        this.addFilter( filter_data );
+      }, this );
+    },
+    // End Collection method /addFilters/
+
+    // Begin Collection method /addFilter/
+    //
+    // Example   : collection.addFilter( <JSON> )
+    // Purpose   : instantiate and add filter model to collection
+    // Arguments :
+    //   * filter_data - filter data (JSON)
+    // Action    :
+    //   * create new filter model from JSON
+    //   * add model to collection
+    // Return    : none
+    // Throws    : none
+    //
+    addFilter : function ( filter_data ) {
+      switch ( filter_data.filter_type ) {
+        case 'simple'  :
+          this.add( new FilterSimpleModel( filter_data ) );
+          break;
+
+        case 'min_max' :
+          this.add( new FilterMinMaxModel( filter_data ) );
+          break;
+      }
     }
+    // End Collection method /addFilter/
   });
 
   // ------------------------ END MODULE CONSTRUCTORS ----------------------
