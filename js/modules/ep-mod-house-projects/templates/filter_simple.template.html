@@ -1,4 +1,4 @@
 <legend><%= key_name %></legend>
 <% values.forEach( function ( value, index ) {%>
-  <input type="checkbox"><%= value_names[ index ] %>
+  <input type="checkbox" name="<%= key %>" value="<%= values[ index ] %>"><%= value_names[ index ] %>
 <%; }); %>

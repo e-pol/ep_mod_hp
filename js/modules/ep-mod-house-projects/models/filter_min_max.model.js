@@ -35,7 +35,8 @@ define([
     classId : 'EP_MOD_HP_FILTER_MIN_MAX_MODEL',
     
     initialize : function () {
-
+      this.setFilterKeyName();
+      this.setFilterValueNames();
     }
   });
 

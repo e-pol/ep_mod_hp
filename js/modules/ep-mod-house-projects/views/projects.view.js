@@ -63,6 +63,7 @@ define([
     },
 
     initialize : function () {
+      var test_count = 0;
       
       this.collection = new ProjectsBriefCollection( null, {
         projects_data : projectsData,
@@ -70,6 +71,11 @@ define([
       } );
 
       this.render();
+
+      this.listenTo( this.filtersView, 'filterSelectChange', function() {
+        var projects_count = this.collection.getPreFilteredLength();
+        this.filtersView.trigger( 'countPrefFilteredProjects', projects_count );
+      });
     },
 
     // Begin View method /render/

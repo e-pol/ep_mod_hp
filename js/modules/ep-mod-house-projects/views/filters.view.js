@@ -47,8 +47,15 @@ define([
 
     template : _.template( filtersTemplate ),
 
+    events : {
+      'click .ep-mod-hp-filters-submit' : 'onFilterSubmit',
+      'click .ep-mod-hp-filters-reset'  : 'onFilterReset'
+    },
+
     initialize : function () {
       this.render();
+      this.listenTo( this.collection, 'filterValueChange',
+        this.onFilterValueChange );
     },
 
     render : function () {
@@ -108,8 +115,26 @@ define([
 
       this.$( configMap.container.filters )
         .append( filterView.render().el );
-    }
+    },
     // End View method /renderProject/
+
+    onFilterValueChange : function () {
+      this.listenToOnce( this, 'countPrefFilteredProjects', function ( data ) {
+        this.$('.ep-mod-hp-filters-submit' ).text('Показать (' + data + ')');
+      } );
+      this.trigger( 'filterSelectChange' );
+    },
+
+    onFilterSubmit : function ( event ) {
+      event.preventDefault();
+      console.log('submit');
+    },
+
+    onFilterReset : function ( event ) {
+      event.preventDefault();
+      console.log('reset');
+    }
+
   });
 
   // ------------------------ END MODULE CONSTRUCTORS ----------------------

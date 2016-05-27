@@ -116,8 +116,92 @@ define([
       };
 
       this.sort();
-    }
+    },
     // End Collection method /sortByKey/
+
+    filterCollection : function ( collection, filters_collection ) {
+      var temp_collection = new Backbone.Collection( collection.models );
+
+      filters_collection.each( function ( filter_model ) {
+        switch ( filter_model.get( 'filter_type' ) ) {
+          case 'simple'  :
+            temp_collection
+              = this.filterBySimple( temp_collection, filter_model );
+            break;
+
+          case 'min_max' :
+            temp_collection
+              = this.filterByMinMax( temp_collection, filter_model );
+            break;
+
+          default :
+            break;
+        }
+      }, this );
+
+      console.log( temp_collection );
+    },
+
+    filterBySimple : function ( collection, filter ) {
+      var
+        temp_collection = new Backbone.Collection(),
+        key = filter.key,
+        set_values = filter.set_values;
+
+      set_values.forEach( function ( value ) {
+        var attr = {};
+
+        if ( +value + 0 ) {
+         value = +value ;
+        }
+
+        attr[key] = value;
+
+        temp_collection.add( collection.where( attr ) );
+      }, this );
+
+      collection.reset( temp_collection.models );
+
+      return collection;
+    },
+
+    filterByMinMax : function ( collection, filter_model ) {
+
+    },
+
+    getPreFilteredLength : function () {
+      var
+        filtered_collection, filters_state_map, filter_id,
+        filter_key, filter_key_regexp, filter_type, filter_type_regexp;
+
+      filtered_collection = new Backbone.Collection( this.models );
+
+      filter_key_regexp = /\w*/;
+      filter_type_regexp =/--(\w*)/;
+
+      filters_state_map = this.filtersCollection.getFiltersState();
+
+      for (filter_id in filters_state_map) {
+        if ( filters_state_map.hasOwnProperty( filter_id ) ) {
+          filter_key  = filter_id.match( filter_key_regexp )[0];
+          filter_type = filter_id.match( filter_type_regexp )[1];
+
+          switch ( filter_type ) {
+            case 'simple'  :
+              filtered_collection = this.filterBySimple( filtered_collection, {
+                key        : filter_key,
+                set_values : filters_state_map[ filter_id ]
+              });
+              break;
+
+            case 'min_max' :
+              console.log('min_max');
+              break;
+          }
+        }
+      }
+      return filtered_collection.length;
+    }
 
   });
 

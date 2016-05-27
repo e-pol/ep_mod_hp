@@ -36,7 +36,6 @@ define([
     classId : 'EP_MOD_HP_FILTERS_COLLECTION',
 
     initialize : function( models, init_data ) {
-
       this.addFilters( init_data.filter_list );
     },
 
@@ -62,7 +61,7 @@ define([
     // Begin Collection method /addFilter/
     //
     // Example   : collection.addFilter( <JSON> )
-    // Purpose   : instantiate and add filter model to collection
+    // Purpose   : add different types of filters to collection
     // Arguments :
     //   * filter_data - filter data (JSON)
     // Action    :
@@ -72,17 +71,100 @@ define([
     // Throws    : none
     //
     addFilter : function ( filter_data ) {
+      var filterModel;
       switch ( filter_data.filter_type ) {
         case 'simple'  :
-          this.add( new FilterSimpleModel( filter_data ) );
+          this.addSimpleFilter( filter_data );
           break;
 
         case 'min_max' :
-          this.add( new FilterMinMaxModel( filter_data ) );
+          this.addMinMaxFilter( filter_data );
           break;
       }
-    }
+    },
     // End Collection method /addFilter/
+
+    // Begin Collection method /addSimpleFilter/
+    //
+    // Example   : collection.addSimpleFilter( <JSON> )
+    // Purpose   : instantiate and add simple filter model to collection
+    // Arguments :
+    //   * filter_data - filter data (JSON)
+    // Action    :
+    //   * create new filter model from JSON
+    //   * begin listen event 'onFilterValueChange'
+    //   * add model to collection
+    // Return    : none
+    // Throws    : none
+    //
+    addSimpleFilter : function ( filter_data ) {
+      var filterModel = new FilterSimpleModel( filter_data );
+      this.listenTo( filterModel, 'valueChange', this.onFilterValueChange );
+      this.add( filterModel );
+    },
+    // End Collection method /addSimpleFilter/
+
+    // Begin Collection method /addMinMaxFilter/
+    //
+    // Example   : collection.addMinMaxFilter( <JSON> )
+    // Purpose   : instantiate and add min max filter model to collection
+    // Arguments :
+    //   * filter_data - filter data (JSON)
+    // Action    :
+    //   * create new filter model from JSON
+    //   * begin listen event 'onFilterValueChange'
+    //   * add model to collection
+    // Return    : none
+    // Throws    : none
+    //
+    addMinMaxFilter : function ( filter_data ) {
+      var filterModel = new FilterMinMaxModel( filter_data );
+      this.listenTo( filterModel, 'valueChange', this.onFilterValueChange );
+      this.add( filterModel );
+    },
+    // End Collection method /addMinMaxFilter/
+
+    onFilterValueChange : function ( data ) {
+      this.trigger( 'filterValueChange');
+    },
+
+    // Begin Collection method /getFiltersState/
+    //
+    // Example   : collection.getFiltersState()
+    // Purpose   : makes filter state map from collection filter models
+    // Arguments :
+    //   * filter_data - filter data (JSON)
+    // Action    :
+    //   * create new filter map (empty object)
+    //   * get each model in collection
+    //     ** create filter id ( <key>--<filter_type> )
+    //     ** add filter state map
+    //   * return filters map
+    // Return    : filters_state_map {Obj}
+    // Throws    : none
+    //
+    getFiltersState : function () {
+      var
+        filters_state_map = {},
+        filter_id;
+
+      this.each( function ( filter_model ) {
+
+        if ( filter_model.get( 'set_values' ) === undefined
+          || filter_model.get( 'set_values' ).length === 0 ) {
+          return;
+        }
+
+        filter_id = filter_model.get( 'key' );
+        filter_id += '--';
+        filter_id += filter_model.get( 'filter_type' ) ;
+
+        filters_state_map[ filter_id ] = filter_model.get( 'set_values' );
+      } );
+
+      return filters_state_map;
+    }
+    // End Collection method /getFiltersState/
   });
 
   // ------------------------ END MODULE CONSTRUCTORS ----------------------

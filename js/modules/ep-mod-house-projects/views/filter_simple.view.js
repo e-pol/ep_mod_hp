@@ -39,6 +39,10 @@ define([
 
     template : _.template( filterSimpleTemplate ),
 
+    events : {
+      'change' : 'onChange'
+    },
+
     initialize : function () {
       this.render();
     },
@@ -46,6 +50,20 @@ define([
     render : function () {
       this.$el.html( this.template( this.model.toJSON() ) );
       return this;
+    },
+
+    onChange : function ( event ) {
+      var elem, key, value, is_selected;
+
+      elem  = event.target;
+      value = elem.value;
+      is_selected = $( elem ).prop( 'checked' );
+
+      if ( is_selected ) {
+        this.model.setValue( value );
+      } else {
+        this.model.unsetValue( value );
+      }
     }
   });
 

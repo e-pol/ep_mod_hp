@@ -83,8 +83,6 @@ define([
       var value_name = lang[ stateMap.lang ].value_name;
       this.set({ value_name : value_name });
     }
-
-
   });
 
   // ------------------------ END MODULE CONSTRUCTORS ----------------------
