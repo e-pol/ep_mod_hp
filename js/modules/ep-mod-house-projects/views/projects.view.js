@@ -63,8 +63,7 @@ define([
     },
 
     initialize : function () {
-      var test_count = 0;
-      
+
       this.collection = new ProjectsBriefCollection( null, {
         projects_data : projectsData,
         filters_data  : filtersData
@@ -72,10 +71,7 @@ define([
 
       this.render();
 
-      this.listenTo( this.filtersView, 'filterSelectChange', function() {
-        var projects_count = this.collection.getPreFilteredLength();
-        this.filtersView.trigger( 'countPrefFilteredProjects', projects_count );
-      });
+      this.listenTo( this.collection, 'change, reset', this.renderProjects );
     },
 
     // Begin View method /render/

@@ -37,6 +37,10 @@ define([
     initialize : function () {
       this.setFilterKeyName();
       this.setFilterValueNames();
+    },
+
+    resetFilter : function () {
+      return false;
     }
   });
 

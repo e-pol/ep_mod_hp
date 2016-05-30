@@ -37,10 +37,20 @@ define([
 
     initialize : function ( models, init_data ) {
 
+      this._full_collection = new Backbone.Collection();
       this.addProjects( init_data.projects_data.project_list );
 
       this.filtersCollection
         = new FiltersCollection( null, init_data.filters_data );
+
+      this.listenTo( this.filtersCollection, 'requestFilteredEstimate',
+        this.onRequestFilteredEstimate );
+
+      this.listenTo( this.filtersCollection, 'applyFilters',
+        this.applyFilters );
+      
+      this.listenTo( this.filtersCollection, 'resetFilters',
+        this.resetCollection );
     },
 
     // Begin Collection method /addProjects/
@@ -71,11 +81,14 @@ define([
     // Action    :
     //   * create ne model from JSON
     //   * add model to collection
+    //   * add model to collection complete copy
     // Return    : none
     // Throws    : none
     //
     addProject : function( project_data ) {
-      this.add( new ProjectBriefModel( project_data ) );
+      var projectBriefModel = new ProjectBriefModel( project_data );
+      this.add( projectBriefModel );
+      this._full_collection.add( projectBriefModel );
     },
     // End Collection method /addProject/
 
@@ -119,19 +132,79 @@ define([
     },
     // End Collection method /sortByKey/
 
-    filterCollection : function ( collection, filters_collection ) {
-      var temp_collection = new Backbone.Collection( collection.models );
+    getFilteredModels : function() {
+      var
+        filtered_collection_models,
+        original_collection
+          = new Backbone.Collection( this._full_collection.models );
 
+      filtered_collection_models =
+        this.filterCollection( original_collection, this.filtersCollection );
+
+      return filtered_collection_models;
+    },
+
+    onRequestFilteredEstimate : function () {
+      this.filtersCollection.setFilteredEstimate( this.getFilteredModels() );
+    },
+
+    // Begin Collection method /applyFilters/
+    //
+    // Example   : collection.applyFilters()
+    // Purpose   : filter this collection by this filters collection
+    // Arguments : none
+    // Action    :
+    //   * make a copy of collection with all the models
+    //   * filter copy with set filters
+    //   * reset this collection with filtered models
+    //   * trigger 'change event' (for ProjectsView listener)
+    //   * return filtered collection models
+    // Return    : filtered collection models
+    // Throws    : none
+    //
+    applyFilters : function () {
+      var
+        filtered_collection_models,
+        original_collection
+        = new Backbone.Collection( this._full_collection.models );
+
+      filtered_collection_models =
+        this.filterCollection( original_collection, this.filtersCollection );
+
+      this.reset( filtered_collection_models );
+
+      return filtered_collection_models;
+    },
+    // End Collection method /applyFilters/
+
+    resetCollection : function () {
+      this.reset( this._full_collection.models );
+    },
+
+    // Begin Collection method /filterCollection/
+    //
+    // Example   : collection.filterCollection( <collection>, <filters_collection> )
+    // Purpose   : filter arbitrary collection by arbitrary filters collection
+    // Arguments :
+    //   * collection - Backbone collection to filter
+    //   * filters_collection - Backbone collection of filters
+    // Action    :
+    //   * create temporary collection with all given models
+    //   * for each filter model call this collection respective filtering method
+    //   * return filtered collection models
+    // Return    : filtered collection models
+    // Throws    : none
+    //
+    filterCollection : function ( collection, filters_collection ) {
       filters_collection.each( function ( filter_model ) {
+
         switch ( filter_model.get( 'filter_type' ) ) {
           case 'simple'  :
-            temp_collection
-              = this.filterBySimple( temp_collection, filter_model );
+            this.filterBySimple( collection, filter_model );
             break;
 
           case 'min_max' :
-            temp_collection
-              = this.filterByMinMax( temp_collection, filter_model );
+            this.filterByMinMax( collection, filter_model );
             break;
 
           default :
@@ -139,14 +212,20 @@ define([
         }
       }, this );
 
-      console.log( temp_collection );
+      return collection.models;
     },
+    // End Collection method /filterCollection/
 
-    filterBySimple : function ( collection, filter ) {
+
+    filterBySimple : function ( collection, filter_model ) {
       var
         temp_collection = new Backbone.Collection(),
-        key = filter.key,
-        set_values = filter.set_values;
+        key = filter_model.get( 'key' ),
+        set_values = filter_model.get( 'set_values' );
+
+      if ( set_values.length === 0 ) {
+        return;
+      }
 
       set_values.forEach( function ( value ) {
         var attr = {};
@@ -162,45 +241,11 @@ define([
 
       collection.reset( temp_collection.models );
 
-      return collection;
+      return collection.models;
     },
 
     filterByMinMax : function ( collection, filter_model ) {
-
-    },
-
-    getPreFilteredLength : function () {
-      var
-        filtered_collection, filters_state_map, filter_id,
-        filter_key, filter_key_regexp, filter_type, filter_type_regexp;
-
-      filtered_collection = new Backbone.Collection( this.models );
-
-      filter_key_regexp = /\w*/;
-      filter_type_regexp =/--(\w*)/;
-
-      filters_state_map = this.filtersCollection.getFiltersState();
-
-      for (filter_id in filters_state_map) {
-        if ( filters_state_map.hasOwnProperty( filter_id ) ) {
-          filter_key  = filter_id.match( filter_key_regexp )[0];
-          filter_type = filter_id.match( filter_type_regexp )[1];
-
-          switch ( filter_type ) {
-            case 'simple'  :
-              filtered_collection = this.filterBySimple( filtered_collection, {
-                key        : filter_key,
-                set_values : filters_state_map[ filter_id ]
-              });
-              break;
-
-            case 'min_max' :
-              console.log('min_max');
-              break;
-          }
-        }
-      }
-      return filtered_collection.length;
+      return collection.models;
     }
 
   });

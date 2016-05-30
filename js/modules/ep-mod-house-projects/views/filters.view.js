@@ -15,11 +15,12 @@
  */
 
 define([
+  'underscore',
   'backbone',
   'ep_mod_hp/views/filter_simple.view',
   'ep_mod_hp/views/filter_min_max.view',
   'text!ep_mod_hp/templates/filters.template.html'
-  ], function ( Backbone,
+  ], function ( _, Backbone,
                 FilterSimpleView, FilterMinMaxView,
                 filtersTemplate ) {
 
@@ -53,9 +54,11 @@ define([
     },
 
     initialize : function () {
+
       this.render();
-      this.listenTo( this.collection, 'filterValueChange',
-        this.onFilterValueChange );
+
+      this.listenTo( this.collection, 'changeFilteredEstimate',
+        this.onChangeFilteredEstimate );
     },
 
     render : function () {
@@ -90,7 +93,7 @@ define([
     //   * filter_model - Backbone filter model
     // Action    :
     //   * create new filter view with given model
-    //   * append view to proper container
+    //   * append view to respective container
     // Return    : none
     // Throws    : none
     //
@@ -118,22 +121,58 @@ define([
     },
     // End View method /renderProject/
 
-    onFilterValueChange : function () {
-      this.listenToOnce( this, 'countPrefFilteredProjects', function ( data ) {
-        this.$('.ep-mod-hp-filters-submit' ).text('Показать (' + data + ')');
-      } );
-      this.trigger( 'filterSelectChange' );
+    // Begin View method /onChangeFilteredEstimate/
+    //
+    // Example   : view.onChangeFilteredEstimate()
+    // Purpose   : show the number of estimate filtered projects
+    // Arguments : data - number of filtered projects
+    // Action    :
+    //   * update submit button text with a number of estimate filtered projects
+    // Return    : none
+    // Throws    : none
+    //
+    onChangeFilteredEstimate : function ( data ) {
+      this.$('.ep-mod-hp-filters-submit' ).text('Показать (' + data + ')');
     },
+    // End View method /onChangeFilteredEstimate/
 
+    // Begin View method /onFilterSubmit/
+    //
+    // Example   : view.onFilterSubmit()
+    // Purpose   : command filters collection to apply its filter
+    // Arguments : event object
+    // Action    :
+    //   * prevent default submit action
+    //   * call filters collection method 'applyFilters'
+    //   * remove number of filtered projects from submit button text
+    // Return    : none
+    // Throws    : none
+    //
     onFilterSubmit : function ( event ) {
       event.preventDefault();
-      console.log('submit');
+      this.collection.applyFilters();
+      this.$('.ep-mod-hp-filters-submit' ).text('Показать');
     },
+    // End View method /onFilterSubmit/
 
+    // Begin View method /onFilterReset/
+    //
+    // Example   : view.onFilterReset()
+    // Purpose   : command filters collection to reset its filter
+    // Arguments : event object
+    // Action    :
+    //   * prevent default reset action
+    //   * call filters collection method 'resetFilters'
+    //   * remove number of filtered projects from submit button text
+    // Return    : none
+    // Throws    : none
+    //
     onFilterReset : function ( event ) {
       event.preventDefault();
-      console.log('reset');
+      this.collection.resetFilters();
+      this.$('.ep-mod-hp-filters-submit' ).text('Показать');
     }
+    // End View method /onFilterReset/
 
   });
 

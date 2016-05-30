@@ -21,3 +21,7 @@ User selects filter input:
    projects collection method 'getPreFilteredLength' which return number of
    prefiltered projects
 10.FiltersView handler updates submit button text with number of projects
+
+User clicks 'submit':
+
+1. FiltersView listening to submit 'click' DOM event

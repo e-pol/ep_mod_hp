@@ -71,7 +71,6 @@ define([
     // Throws    : none
     //
     addFilter : function ( filter_data ) {
-      var filterModel;
       switch ( filter_data.filter_type ) {
         case 'simple'  :
           this.addSimpleFilter( filter_data );
@@ -99,7 +98,7 @@ define([
     //
     addSimpleFilter : function ( filter_data ) {
       var filterModel = new FilterSimpleModel( filter_data );
-      this.listenTo( filterModel, 'valueChange', this.onFilterValueChange );
+      this.listenTo( filterModel, 'changeFilter', this.onChangeFilter );
       this.add( filterModel );
     },
     // End Collection method /addSimpleFilter/
@@ -119,21 +118,60 @@ define([
     //
     addMinMaxFilter : function ( filter_data ) {
       var filterModel = new FilterMinMaxModel( filter_data );
-      this.listenTo( filterModel, 'valueChange', this.onFilterValueChange );
+      this.listenTo( filterModel, 'valueChange', this.onChangeFilter );
       this.add( filterModel );
     },
     // End Collection method /addMinMaxFilter/
 
-    onFilterValueChange : function ( data ) {
-      this.trigger( 'filterValueChange');
+    // Begin Collection method /onChangeFilter/
+    //
+    // Example   : collection.onChangeFilter()
+    // Purpose   : trigger event, requesting estimate filtered project models
+    // Arguments : none
+    // Action    :
+    //   * trigger event 'requestFilteredEstimate' on self
+    // Return    : none
+    // Throws    : none
+    //
+    onChangeFilter : function () {
+      this.trigger( 'requestFilteredEstimate' );
+    },
+    // End Collection method /onChangeFilter/
+
+    // Begin Collection method /setFilteredEstimate/
+    //
+    // Example   : collection.setFilteredEstimate()
+    // Purpose   : set estimate filtered projects number and inform this change
+    // Arguments : projects_list - artray of filtered projects
+    // Action    :
+    //   * set filtered_estimate_number to number of filtered projects
+    //   * trigger event 'changeFilteredEstimate' on self with a value of
+    //     filtered_estimate_number
+    // Return    : none
+    // Throws    : none
+    //
+    setFilteredEstimate : function ( projects_list ) {
+      this.filtered_estimate_number = projects_list.length;
+      this.trigger( 'changeFilteredEstimate', this.filtered_estimate_number );
+    },
+    // End Collection method /setFilteredEstimate/
+    
+    applyFilters : function () {
+      this.trigger( 'applyFilters' );
+    },
+
+    resetFilters : function () {
+      this.each( function ( filter_model ) {
+        filter_model.resetFilter();
+      });
+      this.trigger('resetFilters');
     },
 
     // Begin Collection method /getFiltersState/
     //
-    // Example   : collection.getFiltersState()
+    // Example   : collection.getFiltersStateJSON()
     // Purpose   : makes filter state map from collection filter models
-    // Arguments :
-    //   * filter_data - filter data (JSON)
+    // Arguments : none
     // Action    :
     //   * create new filter map (empty object)
     //   * get each model in collection
@@ -143,7 +181,7 @@ define([
     // Return    : filters_state_map {Obj}
     // Throws    : none
     //
-    getFiltersState : function () {
+    getFiltersStateJSON : function () {
       var
         filters_state_map = {},
         filter_id;

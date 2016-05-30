@@ -15,9 +15,11 @@
  */
 
 define([
+  'jquery',
+  'underscore',
   'backbone',
   'text!ep_mod_hp/templates/filter_simple.template.html'
-], function ( Backbone, filterSimpleTemplate ) {
+], function ( $, _, Backbone, filterSimpleTemplate ) {
 
   "use strict";
 
@@ -40,11 +42,12 @@ define([
     template : _.template( filterSimpleTemplate ),
 
     events : {
-      'change' : 'onChange'
+      'change' : 'setFilter'
     },
 
     initialize : function () {
       this.render();
+      this.listenTo( this.model, 'change', this.render );
     },
 
     render : function () {
@@ -52,19 +55,30 @@ define([
       return this;
     },
 
-    onChange : function ( event ) {
-      var elem, key, value, is_selected;
+    // Begin Model method /setFilter/
+    //
+    // Example   : model.setFilter()
+    // Purpose   : set model`s values when user selects / deselects checkboxes
+    // Arguments : event object
+    // Action    :
+    //   * cache elem, input value, selected flag
+    //   * set model value state
+    // Return    : none
+    // Throws    : none
+    //
+    setFilter : function ( event ) {
+      var elem, value, is_selected;
 
       elem  = event.target;
       value = elem.value;
       is_selected = $( elem ).prop( 'checked' );
 
-      if ( is_selected ) {
-        this.model.setValue( value );
-      } else {
-        this.model.unsetValue( value );
-      }
+      this.model.setFilter({
+          value  : value,
+          is_set : is_selected
+        });
     }
+    // End Model method /setFilter/
   });
 
   // ------------------------ END MODULE CONSTRUCTORS ----------------------
