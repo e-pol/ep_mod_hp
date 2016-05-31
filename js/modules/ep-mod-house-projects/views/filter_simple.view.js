@@ -55,10 +55,11 @@ define([
       return this;
     },
 
-    // Begin Model method /setFilter/
+    // Begin View method /setFilter/
     //
-    // Example   : model.setFilter()
-    // Purpose   : set model`s values when user selects / deselects checkboxes
+    // Example   : view.setFilter()
+    // Purpose   : set model`s 'set_values' when user selects / deselects
+    //             checkboxes
     // Arguments : event object
     // Action    :
     //   * cache elem, input value, selected flag
@@ -78,7 +79,7 @@ define([
           is_set : is_selected
         });
     }
-    // End Model method /setFilter/
+    // End View method /setFilter/
   });
 
   // ------------------------ END MODULE CONSTRUCTORS ----------------------

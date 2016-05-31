@@ -15,21 +15,15 @@
  */
 
 define([
-  'backbone',
   'ep_mod_hp/models/abstract.model'
-], function ( Backbone, AbstractModel ) {
+], function ( AbstractModel ) {
 
   "use strict";
 
 
   // ---------------------- BEGIN MODULE SCOPE VARIABLES --------------------
 
-  var
-    stateMap = {
-      lang : 'ru'
-    },
-
-    ProjectsBriefModel;
+  var ProjectsBriefModel;
 
   // ----------------------- END MODULES SCOPE VARIABLES --------------------
 
@@ -40,7 +34,6 @@ define([
     classId    : 'EP_MOD_HP_PROJECT_BRIEF_MODEL',
 
     initialize : function () {
-      /*this.setProjectKeyName();*/
       this.setValueNames();
     }
 

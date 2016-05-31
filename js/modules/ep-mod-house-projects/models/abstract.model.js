@@ -52,10 +52,22 @@ define([
       throw new Error( '(' + this.classId + ') Could not initialize abstract class' );
     },
 
+    // Begin Abstract Model method /setFilterKeyName/
+    //
+    // Example   : model.setFilterKeyName()
+    // Purpose   : set filter model key names in accordance with chosen language
+    // Arguments : none
+    // Action    :
+    //   * get key name from model
+    //   * get appropriate name from language.json file
+    // Return    : none
+    // Throws    : none
+    //
     setFilterKeyName : function () {
       var key = this.get( 'key' );
       this.set({ key_name : lang[ stateMap.lang ].key_name[ key ] });
     },
+    // End Abstract Model method /setFilterKeyName/
 
     setFilterValueNames : function () {
       var key_name, changeable_key_list, prev_value_list, rev_value_list;

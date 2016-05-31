@@ -15,9 +15,8 @@
  */
 
 define([
-  'backbone',
   'ep_mod_hp/models/abstract.model'
-], function ( Backbone, AbstractModel ) {
+], function ( AbstractModel ) {
 
   "use strict";
 
@@ -40,10 +39,21 @@ define([
       this.set({ set_values : [] });
     },
 
-    validate : function () {
-
-    },
-
+    // Begin Model method /setFilter/
+    //
+    // Example   : model.setFilter( <value_map> )
+    // Purpose   : set filter model current values
+    // Arguments :
+    //   * value_map - value properties
+    // Action    :
+    //   * get value props
+    //   * if value to be set, add or update it, then trigger 'changeFilter'
+    //   * if value is not to be set, unset it and trigger 'changeFilter'
+    // Return    :
+    //   * true - if filter was set or unset successfully
+    //   * false - other cases
+    // Throws    : none
+    //
     setFilter : function ( value_map ) {
       var
         value_pos,
@@ -72,15 +82,22 @@ define([
       return false;
 
     },
+    // End Model method /setFilter/
 
+    // Begin Model method /resetFilter/
+    //
+    // Example   : model.resetFilter()
+    // Purpose   : reset filter model current values to none
+    // Arguments : none
+    // Action    :
+    //   * set filter 'set_value' to none
+    // Return    : none
+    // Throws    : none
+    //
     resetFilter : function () {
       this.set( { set_values : [] } );
-    },
-
-    getFilterState : function () {
-      var filter_state_map = {};
     }
-
+    // End Model method /resetFilter/
   });
 
   // ------------------------ END MODULE CONSTRUCTORS ----------------------
