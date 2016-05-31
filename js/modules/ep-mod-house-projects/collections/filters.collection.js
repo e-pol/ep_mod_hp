@@ -118,7 +118,7 @@ define([
     //
     addMinMaxFilter : function ( filter_data ) {
       var filterModel = new FilterMinMaxModel( filter_data );
-      this.listenTo( filterModel, 'valueChange', this.onChangeFilter );
+      this.listenTo( filterModel, 'changeFilter', this.onChangeFilter );
       this.add( filterModel );
     },
     // End Collection method /addMinMaxFilter/

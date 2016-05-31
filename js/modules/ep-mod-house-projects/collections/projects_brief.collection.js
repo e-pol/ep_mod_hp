@@ -245,6 +245,42 @@ define([
     },
 
     filterByMinMax : function ( collection, filter_model ) {
+      var
+        temp_collection = new Backbone.Collection(),
+        key = filter_model.get( 'key' ),
+        set_values = filter_model.get( 'set_values' ),
+        minVal, maxVal;
+
+      if ( set_values.length === 0 ) {
+        return;
+      }
+
+      minVal = set_values[0];
+      maxVal = set_values[1];
+
+      if ( +minVal + 0 ) {
+        minVal = +minVal ;
+      }
+
+      if ( +maxVal + 0 ) {
+        maxVal = +maxVal ;
+      }
+
+      collection.forEach( function ( project_model ) {
+        var value = project_model.get( key );
+
+        if ( +value + 0 ) {
+          value = +value ;
+        }
+
+        if ( value >= minVal && value <= maxVal ) {
+          temp_collection.add( project_model );
+        }
+
+      } );
+
+      collection.reset( temp_collection.models );
+
       return collection.models;
     }
 

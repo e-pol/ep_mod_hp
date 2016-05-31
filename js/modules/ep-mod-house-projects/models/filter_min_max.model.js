@@ -37,10 +37,31 @@ define([
     initialize : function () {
       this.setFilterKeyName();
       this.setFilterValueNames();
+
+      this.setFilter({
+        min : this.get( 'values' )[0],
+        max : this.get( 'values' )[1]
+      });
+    },
+
+    setFilter : function ( values_map ) {
+      var set_values = [];
+
+      set_values[0] = values_map.min;
+      set_values[1] = values_map.max;
+
+      this.set( { set_values : set_values } );
+
+      this.trigger( 'changeFilter' );
     },
 
     resetFilter : function () {
-      return false;
+      this.set( { set_values : [
+        this.get( 'values' )[0],
+        this.get( 'values' )[1]
+      ] } );
+      
+      this.trigger( 'resetFilter' );
     }
   });
 

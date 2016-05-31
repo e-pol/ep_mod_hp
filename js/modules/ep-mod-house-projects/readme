@@ -1,27 +1,21 @@
 WorkFlows
 
-User selects filter input:
+User changes filter ui adjustments :
 
-1. FilterView listening to 'change' DOM event invokes its 'onChange' method
-2. FilterView 'onChange' method calls this view model method 'setValue'
-   or 'unsetValue'
-3. Model 'setValue' or 'unsetValue' method triggers 'valueChange' event
-   on itself
-4. Collection, listening to its models 'valueChange' event, captures the fired
-   event and invokes its handler 'onFilterValueChange'
-5. Collection method 'onFilterValueChange' triggers 'filterValueChange'
-   on itself
-6. FiltersView listens to its collection event 'filterValueChange', captures
-   this event and invokes its handler 'onFilterValueChange'
-7. Handler 'onFilterValueChange' sets one time event 'countPrefFilteredProjects'
-   listener ( later : updates submit button text on resolve )
-8. Handler 'onFilterValueChange' triggers 'filterSelectChange' on its
-   FiltersView
-9. ProjectsView listening to FiltersView event 'filterSelectChange' invokes
-   projects collection method 'getPreFilteredLength' which return number of
-   prefiltered projects
-10.FiltersView handler updates submit button text with number of projects
+1. Filter Model view orders its Model to change settings
+2. Filter Model changes its 'set_values' and triggers 'changeFilter' on self
+3. Filters Collection, listening to Filter Model event 'changeFilter',
+   triggers 'requestFilteredEstimate'
+4. Projects Collection, listening to Filters Collection 'requestFilteredEstimate',
+   invokes Filters Collection method 'setFilteredEstimate' with a set of filtered
+   projects
+5. Filters Collection updates number of filtered projects and triggers on itself
+   'changeFilteredEstimate'
+6. Filters View, listening to 'changeFilteredEstimate', updates
+   estimate number of filtered projects on its 'submit' button
 
-User clicks 'submit':
+User clicks 'submit' :
 
 1. FiltersView listening to submit 'click' DOM event
+
+User clicks 'reset' :

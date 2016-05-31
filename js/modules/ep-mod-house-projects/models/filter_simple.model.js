@@ -44,38 +44,11 @@ define([
 
     },
 
-/*    setValue   : function ( value ) {
-      var set_values = this.get( 'set_values' );
-
-      if ( set_values.indexOf( value ) < 0 ) {
-        set_values.push( value );
-        this.set({ set_values : set_values });
-        this.trigger( 'valueChange', value );
-        return true;
-      }
-      return false;
-    },
-
-    unsetValue : function ( value ) {
-      var
-        set_values = this.get( 'set_values' ),
-        value_pos;
-
-      if ( set_values.indexOf( value ) < 0 ) {
-        return false;
-      }
-      value_pos = set_values.indexOf( value );
-      set_values.splice( value_pos, 1 );
-      this.set({ set_values : set_values });
-      this.trigger( 'valueChange', value );
-      return true;
-    },*/
-
-    setFilter : function ( value_state ) {
+    setFilter : function ( value_map ) {
       var
         value_pos,
-        value        = value_state.value,
-        value_is_set = value_state.is_set,
+        value        = value_map.value,
+        value_is_set = value_map.is_set,
         set_values   = this.get( 'set_values' );
 
       if ( value_is_set ) {
