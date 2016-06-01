@@ -17,8 +17,9 @@
 define([
   'backbone',
   'ep_mod_hp/views/projects.view',
+  'ep_mod_hp/views/project_detailed.view',
   'text!ep_mod_hp/templates/main.template.html'
-  ], function ( Backbone, ProjectsView, mainTemplate ) {
+  ], function ( Backbone, ProjectsView, ProjectDetailedView, mainTemplate ) {
   "use strict";
 
 
@@ -63,8 +64,18 @@ define([
     },
 
     onDetailedProjectRequest : function ( data ) {
+
+      this.projectsView.$el.hide();
+
       console.log( '(' + this.classId + ') Project id = | ' + data
         + ' | requested' );
+
+      this.projectDetailedView = new ProjectDetailedView({
+        el        : this.$( configMap.container.projectDetailedView ),
+        project_data : {
+          project_id : data
+        }
+      });
     }
 
   });

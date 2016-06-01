@@ -1,0 +1,160 @@
+<h2>Проект <%= title %></h2>
+<div class="row clearfix">
+  <div class="col-md-9 pull-left carousel">
+
+  </div>
+  <div class="col-md-3 ep-mod-hp-detailed-overview">
+    <h3>Общие параметры</h3>
+    <table>
+      <tr>
+        <td>Площадь</td>
+        <td><%= _model.getFloorsArea() %> м<sup>2</sup></td>
+      </tr>
+      <tr>
+        <td>Спальни</td>
+        <td><%= _model.getRoomsNumber( 'bedroom' ) %> шт</td>
+      </tr>
+      <tr>
+        <td>Санузлы</td>
+        <td><%= _model.getRoomsNumber( 'restroom' ) %> шт</td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="row clearfix">
+  <div class="col-md-4 pull-left">
+
+    <% var roman_numerals = [
+    'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'
+    ]; %>
+
+    <% var index = 0; %>
+
+    <h3>Планировка</h3>
+
+    <table>
+
+      <tr>
+        <th>№ п/п</th>
+        <th>Помещение</th>
+        <th>Площадь, м<sup>2</sup></th>
+      </tr>
+
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+      </tr>
+
+      <% for (var floor in floors) { %>
+
+      <tr>
+        <td><%= roman_numerals[ index ] %></td>
+        <td colspan="2">
+          <%= value_name[ floor ] %>
+        </td>
+      </tr>
+
+        <% floors[ floor ].forEach( function ( room, index ) { %>
+
+          <tr>
+            <td><%= index + 1 %></td>
+            <td><%= value_name[ room.type ] %></td>
+            <td><%= room.area %></td>
+          </tr>
+
+        <% }); %>
+
+      <tr>
+        <td></td>
+        <td>Итого</td>
+        <td><%= _model.getFloorArea( floor ) %></td>
+      </tr>
+
+      <% index++; %>
+
+      <% } %>
+      <tr>
+        <td></td>
+        <td>ВСЕГО</td>
+        <td><%= _model.getFloorsArea() %></td>
+      </tr>
+
+    </table>
+
+  </div>
+  <div class="col-md-4 pull-left">
+    <h3>Конструкции</h3>
+
+    <% index = 0; %>
+
+    <table>
+
+      <tr>
+        <th>№ п/п</th>
+        <th>Наименование</th>
+        <th>Ед.изм</th>
+        <th>Объем, ед.изм.</th>
+      </tr>
+
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+      </tr>
+
+
+      <% structures.forEach( function ( structure, index ) { %>
+
+      <tr>
+        <td><%= roman_numerals[ index ] %></td>
+        <td colspan="3">
+          <%= value_name[ structure.type ] %>
+        </td>
+      </tr>
+
+        <% if ( structure.hasOwnProperty( 'variants' ) ) {  %>
+
+      <tr>
+        <td></td>
+        <td><%= value_name[ 'variants' ] %></td>
+      </tr>
+
+          <% structure.variants.forEach( function ( variant, index ) { %>
+
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= value_name[ variant.type ] %></td>
+        <td><%= value_name[ variant.unit ] %></td>
+        <td><%= variant.volume %></td>
+      </tr>
+
+          <% } ); %>
+
+        <% } %>
+
+        <% if ( structure.hasOwnProperty( 'subs' ) ) {  %>
+
+          <% structure.subs.forEach( function ( substructure, index ) { %>
+
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= value_name[ substructure.type ] %></td>
+        <td><%= value_name[ substructure.unit ] %></td>
+        <td><%= substructure.volume %></td>
+      </tr>
+
+          <% } ); %>
+
+        <% } %>
+
+      <% } ); %>
+
+    </table>
+
+  </div>
+  <div class="col-md-4 pull-left">
+    <h3>Стоимость</h3>
+  </div>
+</div>

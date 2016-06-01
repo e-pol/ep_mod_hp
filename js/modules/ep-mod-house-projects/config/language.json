@@ -7,10 +7,29 @@
       "tech"       : "технология"
     },
     "value_name" : {
-      "house"         : "дом",
-      "bath-house"    : "баня",
-      "profiled-beam" : "профилированный брус",
-      "laften"        : "лафет"
+      "bath-house"      : "баня",
+      "bedroom"         : "спальня",
+      "floor_00"        : "цокольный этаж",
+      "floor_01"        : "1й этаж",
+      "floor_02"        : "2й этаж",
+      "foundation"      : "фундамент",
+      "foundation-perimeter" : "ленточный",
+      "foundation-slab" : "плита",
+      "garage"          : "гараж",
+      "greatroom"       : "гостиная",
+      "house"           : "дом",
+      "laften"          : "лафет",
+      "m"               : "м",
+      "m2"              : "м2",
+      "m3"              : "м3",
+      "profiled-beam"   : "профилированный брус",
+      "restroom"        : "санузел",
+      "roof"            : "крыша",
+      "roof-cover"      : "кровля",
+      "roof-insulation" : "утеплитель",
+      "variants"        : "варианты",
+      "walls"           : "стены",
+      "walls-wooden"    : "деревянные"
     }
   }
 }

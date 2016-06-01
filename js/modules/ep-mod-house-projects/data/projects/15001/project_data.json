@@ -1,4 +1,96 @@
 {
-  "name": "application-name",
-  "version": "0.0.1"
+  "id"    : "15001",
+  "floors" : {
+    "floor_00" : [
+      {
+        "type" : "garage",
+        "area" : 30
+      }
+    ],
+    "floor_01" : [
+      {
+        "type" : "greatroom",
+        "area" : 25
+      },
+      {
+        "type" : "bedroom",
+        "area" : 15
+      },
+      {
+        "type" : "bedroom",
+        "area" : 12
+      },
+      {
+        "type" : "restroom",
+        "area" : 8
+      }
+    ],
+    "floor_02" : [
+      {
+        "type"  : "bedroom",
+        "area"  : 18
+      },
+      {
+        "type" : "bedroom",
+        "area" : 15
+      },
+      {
+        "type" : "bedroom",
+        "area" : 12
+      },
+      {
+        "type" : "restroom",
+        "area" : 4
+      }
+    ]
+  },
+  "structures" : [
+    {
+      "type"     : "foundation",
+      "variants" : [
+        {
+          "type"  : "foundation-slab",
+          "unit"  : "m2",
+          "volume" : 60
+        },
+        {
+          "type"  : "foundation-perimeter",
+          "unit"  : "m",
+          "volume" : 60
+        }
+      ]
+    },
+    {
+      "type"     : "walls",
+      "subs" : [
+        {
+          "type"   : "walls-wooden",
+          "unit"   : "m2",
+          "volume" : 180
+        }
+      ]
+    },
+    {
+      "type"      : "roof",
+      "subs"  : [
+        {
+          "type"   : "roof-cover",
+          "unit"   : "m2",
+          "volume" : 160
+        },
+        {
+          "type"   : "roof-insulation",
+          "unit"   : "m2",
+          "volume" : 80
+        }
+      ]
+    }
+  ],
+  "images" : {
+    "gallery" : [
+      {
+        "path" : "img/project_pb-16_001.jpg"
+      }
+    ]
+  }
 }
