@@ -1,4 +1,7 @@
 {
-  "name": "application-name",
-  "version": "0.0.1"
+  "name": "ep-mod-hp-config",
+  "version": "0.0.1",
+  "routes" : {
+    "base_route" : ""
+  }
 }

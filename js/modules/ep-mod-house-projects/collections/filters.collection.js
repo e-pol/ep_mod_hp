@@ -36,7 +36,11 @@ define([
     classId : 'EP_MOD_HP_FILTERS_COLLECTION',
 
     initialize : function( models, init_data ) {
-      this.addFilters( init_data.filter_list );
+      this.addFilters( init_data.filters_data.filter_list );
+
+      if ( init_data.filters_state_map ) {
+        this.setFiltersState( init_data.filters_state_map );
+      }
     },
 
     // Begin Collection method /addFilters/
@@ -123,6 +127,56 @@ define([
     },
     // End Collection method /addMinMaxFilter/
 
+    getStateStr : function () {
+      var
+        filters_state = null,
+        filter_str, filter_key, filter_type, filter_set_values, last_index;
+
+      this.forEach( function ( filter_model ) {
+        filter_set_values = filter_model.get( 'set_values' );
+
+        if ( filter_set_values.length === 0 ) {
+          return;
+        }
+
+        filter_type    = filter_model.get( 'filter_type' );
+
+        if ( filter_type === 'min_max' ) {
+          var
+            min = filter_model.get( 'values' )[0],
+            max = filter_model.get( 'values' )[1],
+            min_set = filter_model.get( 'set_values' )[0],
+            max_set = filter_model.get( 'set_values' )[1];
+
+          if ( min === min_set && max === max_set ) {
+            return;
+          }
+        }
+
+        filters_state = filters_state || [];
+
+        filter_key     = filter_model.get( 'key' );
+
+        filter_str = filter_key + '--' + filter_type + '{';
+
+        last_index = filter_set_values.length - 1;
+
+        filter_set_values.forEach( function ( set_value, index ) {
+          filter_str += set_value;
+          if ( index !== last_index ) {
+            filter_str += ',';
+          }
+        });
+
+        filter_str += '}';
+
+        filters_state.push( filter_str );
+
+      } );
+
+      return filters_state;
+    },
+
     // Begin Collection method /onChangeFilter/
     //
     // Example   : collection.onChangeFilter()
@@ -155,6 +209,48 @@ define([
       this.trigger( 'changeFilteredEstimate', this.filtered_estimate_number );
     },
     // End Collection method /setFilteredEstimate/
+
+    setFiltersState : function ( filters_state_map ) {
+      var
+        filter_key_regex, filter_key, filter_type_regex, filter_type,
+        filter_values_regex, filter_values, filter_models, filter_model;
+
+      filters_state_map.forEach( function ( filter_state_map_str ) {
+
+        filter_key_regex    = /\w*[^-]/;
+        filter_key   = filter_state_map_str.match( filter_key_regex )[0];
+
+        filter_type_regex   = /--(\w*)/;
+        filter_type  = filter_state_map_str.match( filter_type_regex )[1];
+
+        filter_values_regex = /{(.*)}/;
+        filter_values = filter_state_map_str.match( filter_values_regex )[1];
+        filter_values = filter_values.split(',');
+
+        filter_model = this.findWhere({
+          filter_type : filter_type,
+          key         : filter_key
+        });
+
+        switch ( filter_type ) {
+          case 'simple':
+            filter_model.setFilter({
+              value  : filter_values[0],
+              is_set : true
+            });
+            break;
+
+          case 'min_max':
+            filter_model.setFilter({
+              min : filter_values[0],
+              max : filter_values[1]
+            });
+            break;
+        }
+        
+      }, this );
+
+    },
     
     applyFilters : function () {
       this.trigger( 'applyFilters' );

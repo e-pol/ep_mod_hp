@@ -35,7 +35,7 @@ define([
     classId : 'EP_MOD_HP_PROJECT_BRIEF_VIEW',
 
     tagName   : 'div',
-    className : 'pull-left col-md-4',
+    className : 'ep-mod-hp-project-brief pull-left col-md-4',
 
     template : _.template( projectBriefTemplate ),
 

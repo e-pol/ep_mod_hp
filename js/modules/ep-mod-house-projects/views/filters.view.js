@@ -55,6 +55,8 @@ define([
 
     initialize : function () {
 
+      this.$el.addClass( 'ep-mod-hp-filters' );
+
       this.render();
 
       this.listenTo( this.collection, 'changeFilteredEstimate',
@@ -67,6 +69,11 @@ define([
       this.renderFilters();
 
       return this;
+    },
+
+    getState : function () {
+      var state_map = {};
+      return state_map;
     },
 
     // Begin View method /renderProjects/
@@ -132,7 +139,10 @@ define([
     // Throws    : none
     //
     onChangeFilteredEstimate : function ( data ) {
-      this.$('.ep-mod-hp-filters-submit' ).text('Показать (' + data + ')');
+      this.$( '.ep-mod-hp-filters-submit' )
+        .text('Показать (' + data + ')')
+        .addClass( 'btn-success' )
+        .removeClass( 'btn-info' );
     },
     // End View method /onChangeFilteredEstimate/
 
@@ -151,7 +161,10 @@ define([
     onFilterSubmit : function ( event ) {
       event.preventDefault();
       this.collection.applyFilters();
-      this.$('.ep-mod-hp-filters-submit' ).text('Показать');
+      this.$('.ep-mod-hp-filters-submit' )
+        .text('Показать')
+        .addClass( 'btn-info' )
+        .removeClass( 'btn-success' );
     },
     // End View method /onFilterSubmit/
 
@@ -170,7 +183,10 @@ define([
     onFilterReset : function ( event ) {
       event.preventDefault();
       this.collection.resetFilters();
-      this.$('.ep-mod-hp-filters-submit' ).text('Показать');
+      this.$('.ep-mod-hp-filters-submit' )
+        .text('Показать' )
+        .addClass( 'btn-info' )
+        .removeClass( 'btn-success' );
     }
     // End View method /onFilterReset/
 

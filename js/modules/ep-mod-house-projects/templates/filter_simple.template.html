@@ -1,4 +1,11 @@
 <legend><%= key_name %></legend>
-<% values.forEach( function ( value, index ) {%>
-  <input type="checkbox" name="<%= key %>" value="<%= values[ index ] %>"><%= value_names[ index ] %>
+<% values.forEach( function ( value, index ) { %>
+<label>
+  <input type="checkbox" name="<%= key %>" value="<%= values[ index ] %>"
+    <% if ( _model.isSet( values[ index ] ) ) { %>
+      checked="checked"
+    <% } %>
+    >
+  <%= value_names[ index ] %>
+</label>
 <%; }); %>

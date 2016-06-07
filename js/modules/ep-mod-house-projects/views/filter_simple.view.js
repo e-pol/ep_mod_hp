@@ -37,7 +37,7 @@ define([
     classId : 'EP_MOD_HP_PROJECT_BRIEF_VIEW',
 
     tagName : 'fieldset',
-    className : '',
+    className : 'ep-mod-hp-filter ep-mod-hp-filter-simple',
 
     template : _.template( filterSimpleTemplate ),
 

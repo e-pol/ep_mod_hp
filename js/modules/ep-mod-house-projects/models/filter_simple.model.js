@@ -36,7 +36,12 @@ define([
     initialize : function () {
       this.setFilterKeyName();
       this.setFilterValueNames();
+      this.set({ _model : this });
       this.set({ set_values : [] });
+    },
+
+    isSet : function ( value ) {
+      return ! (this.get( 'set_values' ).indexOf( value ) < 0 );
     },
 
     // Begin Model method /setFilter/
@@ -60,6 +65,10 @@ define([
         value        = value_map.value,
         value_is_set = value_map.is_set,
         set_values   = this.get( 'set_values' );
+
+      if ( +value + 0 === +value) {
+        value = +value;
+      }
 
       if ( value_is_set ) {
         if ( set_values.indexOf( value ) < 0 ) {

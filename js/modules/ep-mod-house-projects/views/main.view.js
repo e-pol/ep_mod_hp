@@ -16,10 +16,13 @@
 
 define([
   'backbone',
+  'ep_mod_hp/routers/router',
   'ep_mod_hp/views/projects.view',
   'ep_mod_hp/views/project_detailed.view',
+  'json!ep_mod_hp/config/config.json',
   'text!ep_mod_hp/templates/main.template.html'
-  ], function ( Backbone, ProjectsView, ProjectDetailedView, mainTemplate ) {
+  ], function ( Backbone, Router, ProjectsView, ProjectDetailedView,
+                config, mainTemplate ) {
   "use strict";
 
 
@@ -51,31 +54,143 @@ define([
 
       this.render();
 
-      this.projectsView = new ProjectsView({
-        el : this.$( configMap.container.projectsView )
-      });
+      this.router = new Router();
 
-      this.listenTo( this.projectsView, 'requestDetailedProject',
-        this.onDetailedProjectRequest );
+      this.listenTo( this.router, 'requestProjects', this.onRequestRouteProjects );
+      this.listenTo( this.router, 'requestProject', this.onRequestRouteProject );
+
+      Backbone.history.start();
+
     },
 
     render : function () {
       this.$el.html( this.template );
     },
 
-    onDetailedProjectRequest : function ( data ) {
-
-      this.projectsView.$el.hide();
-
-      console.log( '(' + this.classId + ') Project id = | ' + data
-        + ' | requested' );
-
-      this.projectDetailedView = new ProjectDetailedView({
-        el        : this.$( configMap.container.projectDetailedView ),
-        project_data : {
-          project_id : data
-        }
+    // Begin View method /renderProjects/
+    //
+    // Example   : view.renderFilters()
+    // Purpose   : render all filters
+    // Arguments : none
+    // Action    : render each filter model of this view collection
+    // Return    : none
+    // Throws    : none
+    //
+    initProjectsView : function ( data ) {
+      this.projectsView = new ProjectsView({
+        el   : this.$( configMap.container.projectsView ),
+        data : data
       });
+
+      this.listenTo( this.projectsView, 'requestDetailedProject',
+        this.onRequestProject );
+
+      this.listenTo( this.projectsView, 'changeState',
+        this.onChangeState );
+    },
+
+    initProjectDetailedView : function ( project_id ) {
+      this.projectDetailedView = new ProjectDetailedView({
+        el           : this.$( configMap.container.projectDetailedView ),
+        project_data : { project_id : project_id }
+      });
+    },
+
+    onChangeState : function ( state_str ) {
+      if ( ! state_str ) {
+        return;
+      }
+
+      if ( state_str === 'reset' ) {
+        this.router.navigate( 'projects' );
+        return;
+      }
+
+      state_str = 'projects&&' + state_str;
+      
+      this.router.navigate( state_str );
+    },
+
+    onRequestProject : function ( data ) {
+      var base_route, route;
+
+      base_route = config.routes.base_route;
+
+      if ( base_route !== '' ) {
+        route = base_route + '/project/' + data;
+      }
+      else {
+        route = 'project/' + data;
+      }
+
+      console.log( route );
+
+      this.router.navigate( route, { trigger : true } );
+  },
+
+    onRequestRouteProjects : function ( data ) {
+      var state_map = null;
+
+      if ( data !== this.prev_projects_view_data ) {
+        this.prev_projects_view_data = data;
+        state_map = this.stateDataToJSON( data );
+        this.initProjectsView( { state_map : state_map } );
+      }
+
+      if ( this.projectDetailedView ) {
+        this.projectDetailedView.$el.hide();
+      }
+
+      if ( state_map ) {
+        this.$( '.ep-mod-hp-filters-submit' ).click();
+      }
+
+      this.projectsView.$el.show();
+    },
+
+    onRequestRouteProject : function ( data ) {
+      console.log( 'mainView : "onRequestRouteProject"', data );
+
+      this.initProjectDetailedView( data );
+
+      if ( this.projectsView ) {
+        this.projectsView.$el.hide();
+      }
+
+      this.projectDetailedView.$el.show();
+    },
+
+    stateDataToJSON : function ( state_data ) {
+      var filters_regex, filters, sorts_regex, sorts, pages_regex, pages;
+
+      state_data = decodeURIComponent( state_data );
+
+      filters_regex = /filter=(.[^&&]*)/;
+      filters       = state_data.match( filters_regex );
+      if ( filters ) {
+        filters = filters[1];
+        filters = filters.split('|');
+      }
+
+      sorts_regex = /sort=(.[^&&]*)/;
+      sorts       = state_data.match( sorts_regex );
+      if ( sorts ) {
+        sorts = sorts[1];
+        sorts = sorts.split('|');
+      }
+
+      pages_regex = /page=(.[^&&]*)/;
+      pages       = state_data.match( pages_regex );
+      if ( pages ) {
+        pages = pages[1];
+        pages = pages.split('|');
+      }
+
+      return {
+        filter : filters,
+        sort   : sorts,
+        page   : pages
+      };
     }
 
   });

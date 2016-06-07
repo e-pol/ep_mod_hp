@@ -38,7 +38,7 @@ define([
     classId : 'EP_MOD_HP_PROJECT_BRIEF_VIEW',
 
     tagName     : 'fieldset',
-    className   : '',
+    className : 'ep-mod-hp-filter ep-mod-hp-filter-min-max',
 
     ui : {
       slider : '.ep-mod-hp-filter-min-max-slider',
@@ -83,6 +83,9 @@ define([
       event_selector = 'keypress ' + this.ui.maxVal;
       events_hash[ event_selector ] = 'onKeypressMax';
 
+      event_selector = 'blur ' + this.ui.minVal;
+      events_hash[ event_selector ] = 'onBlurMin';
+
       this.delegateEvents( events_hash );
     },
     // End View method /setEvents/
@@ -97,11 +100,14 @@ define([
     // Throws    : none
     //
     setSlider : function () {
-      var self = this;
+      var
+        set_min = this.model.get( 'set_values' )[0],
+        set_max = this.model.get( 'set_values' )[1],
+        self = this;
 
       this.$slider = this.$( this.ui.slider ).slider( {
         range  : true,
-        values : [ 0, 300 ],
+        values : [ set_min, set_max ],
         min    : 0,
         max    : 300,
         step   : 1,
@@ -117,6 +123,30 @@ define([
     },
     // End View method /seSlider/
 
+    setMin : function ( event ) {
+      var $elem, value;
+      $elem  = $( event.target );
+      value =  $elem.val();
+      this.$slider.slider( 'values', 0, value );
+    },
+
+    setMax : function ( event ) {
+      var $elem, value;
+      $elem  = $( event.target );
+      value =  $elem.val();
+      this.$slider.slider( 'values', 1, value );
+    },
+
+    onBlurMin : function ( event ) {
+      event.preventDefault();
+      this.setMin( event );
+    },
+
+    onBlurMax : function ( event ) {
+      event.preventDefault();
+      this.setMax( event );
+    },
+
     // Begin View method /onKeypressMin/
     //
     // Example   : view.onKeypressMin( event )
@@ -125,21 +155,16 @@ define([
     // Action    :
     //   * if pressed 'enter' in input area
     //     ** prevent default action
-    //     ** get min value
-    //     ** update slider state ( its min value )
+    //     ** set min value to ui
     //     ** make elem loose focus
     // Return    : none
     // Throws    : none
     //
     onKeypressMin : function ( event ) {
-      var $elem, value;
-
       if ( event.keyCode === 13 ) {
         event.preventDefault();
-        $elem  = $( event.target );
-        value =  $elem.val();
-        this.$slider.slider( 'values', 0, value );
-        $elem.blur();
+        this.setMin( event );
+        $( event.target ).blur();
       }
     },
     // End View method /onKeypressMax/
@@ -152,21 +177,16 @@ define([
     // Action    :
     //   * if pressed 'enter' in input area
     //     ** prevent default action
-    //     ** get max value
-    //     ** update slider state ( its max value )
+    //     ** set max value to ui
     //     ** make elem loose focus
     // Return    : none
     // Throws    : none
     //
     onKeypressMax : function ( event ) {
-      var $elem, value;
-
       if ( event.keyCode === 13 ) {
         event.preventDefault();
-        $elem  = $( event.target );
-        value =  $elem.val();
-        this.$slider.slider( 'values', 1, value );
-        $elem.blur();
+        this.setMax( event );
+        $( event.target ).blur();
       }
     },
     // End View method /onKeypressMax/

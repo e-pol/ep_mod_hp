@@ -78,8 +78,6 @@ define([
 
         self.model = new ProjectDetailedModel( rev_project_full_data );
 
-        console.log( self.model );
-
         self.render();
       });
     },

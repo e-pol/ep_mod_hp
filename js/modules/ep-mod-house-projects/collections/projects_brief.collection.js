@@ -36,12 +36,18 @@ define([
     classId : 'EP_MOD_HP_PROJECTS_BRIEF_COLLECTION',
 
     initialize : function ( models, init_data ) {
+      var filters_state_map;
+
+      filters_state_map = init_data.filters_state_map || null;
 
       this._full_collection = new Backbone.Collection();
       this.addProjects( init_data.projects_data.project_list );
 
       this.filtersCollection
-        = new FiltersCollection( null, init_data.filters_data );
+        = new FiltersCollection( null, {
+        filters_data      : init_data.filters_data,
+        filters_state_map : filters_state_map
+      } );
 
       this.listenTo( this.filtersCollection, 'requestFilteredEstimate',
         this.onRequestFilteredEstimate );
@@ -164,21 +170,46 @@ define([
     //
     applyFilters : function () {
       var
-        filtered_collection_models,
         original_collection
-        = new Backbone.Collection( this._full_collection.models );
+        = new Backbone.Collection( this._full_collection.models ),
+        filtered_collection_models, state_str;
 
       filtered_collection_models =
         this.filterCollection( original_collection, this.filtersCollection );
 
       this.reset( filtered_collection_models );
 
+      state_str = this.getStateStr();
+      this.trigger('changeState', state_str);
+
       return filtered_collection_models;
     },
     // End Collection method /applyFilters/
 
+    getStateStr : function () {
+      var
+        state_str = null,
+        filters_state, last_index;
+
+      filters_state = this.filtersCollection.getStateStr();
+
+      if ( filters_state !== null ) {
+        state_str = 'filter=';
+        last_index = filters_state.length - 1;
+        filters_state.forEach( function ( filter_str, index ) {
+          state_str += filter_str;
+          if ( index !== last_index) {
+            state_str += '|';
+          }
+        } );
+      }
+
+      return state_str;
+    },
+
     resetCollection : function () {
       this.reset( this._full_collection.models );
+      this.trigger( 'changeState', 'reset' );
     },
 
     // Begin Collection method /filterCollection/

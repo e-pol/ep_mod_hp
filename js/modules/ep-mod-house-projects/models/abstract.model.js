@@ -16,8 +16,9 @@
 
 define([
   'backbone',
-  'json!ep_mod_hp/config/language.json'
-], function ( Backbone, lang ) {
+  'json!ep_mod_hp/config/language.json',
+  'json!ep_mod_hp/config/lang-ru.json'
+], function ( Backbone, lang, langRu ) {
 
   "use strict";
 
@@ -94,6 +95,21 @@ define([
     setValueNames : function () {
       var value_name = lang[ stateMap.lang ].value_name;
       this.set({ value_name : value_name });
+    },
+
+    toJSON : function () {
+      var
+        result = { _lang : {} },
+        attributes = this.attributes,
+        dictionary = langRu.dictionary,
+        attribute;
+
+      for ( attribute in attributes ) {
+        result[ attribute ] = attributes[ attribute ];
+        result._lang[ attribute ] = dictionary[ attributes[ attribute ] ];
+      }
+
+      return result;
     }
   });
 

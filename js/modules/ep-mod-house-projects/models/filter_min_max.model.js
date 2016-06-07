@@ -58,10 +58,21 @@ define([
     // Throws    : none
     //
     setFilter : function ( values_map ) {
-      var set_values = [];
+      var set_values = [], prop_min, prop_max;
 
-      set_values[0] = values_map.min;
-      set_values[1] = values_map.max;
+      prop_min = values_map.min;
+      prop_max = values_map.max;
+
+      if ( +prop_min + 0 === +prop_min ) {
+        prop_min = +prop_min;
+      }
+
+      if ( +prop_max + 0 === +prop_max ) {
+        prop_max = +prop_max;
+      }
+
+      set_values[0] = prop_min;
+      set_values[1] = prop_max;
 
       this.set( { set_values : set_values } );
 

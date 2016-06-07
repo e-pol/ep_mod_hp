@@ -62,16 +62,33 @@ define([
       'click #ep-mod-hp-collection-gallery a' : 'onClickProject'
     },
 
-    initialize : function () {
+    initialize : function ( init_data ) {
+      var
+        state_map = null,
+        filters_state_map = null;
+
+      if ( init_data.data ) {
+        if ( init_data.data.state_map ) {
+          state_map         = init_data.data.state_map;
+          filters_state_map = state_map.filter;
+        }
+
+      }
 
       this.collection = new ProjectsBriefCollection( null, {
-        projects_data : projectsData,
-        filters_data  : filtersData
+        projects_data     : projectsData,
+        filters_data      : filtersData,
+        filters_state_map : filters_state_map
       } );
 
       this.render();
 
       this.listenTo( this.collection, 'change, reset', this.renderProjects );
+      this.listenTo( this.collection, 'changeState', this.onChangeState );
+    },
+
+    onChangeState : function ( state_str ) {
+      this.trigger( 'changeState', state_str );
     },
 
     // Begin View method /render/
@@ -88,6 +105,7 @@ define([
     // Throws    : none
     //
     render : function () {
+
       this.$el.html( this.template );
 
       this.filtersView = new FiltersView({

@@ -87,6 +87,19 @@ define([
     },
     // End Model method /getFloorsArea/
 
+    // Begin Model method /getRoomsNumber/
+    //
+    // Example   : model.getRoomsNumber( 'bedroom' )
+    // Purpose   : get number of rooms of given type
+    // Arguments :
+    //    * room_type - type of a room
+    // Action    :
+    //   * get all floors
+    //   * for each floor increase count for every matching room
+    //   * return count
+    // Return    : number of rooms matching the given type
+    // Throws    : none
+    //
     getRoomsNumber : function ( room_type ) {
       var
         count = 0,
@@ -99,7 +112,7 @@ define([
           rooms = floors[ floor ];
           rooms.forEach( function( room ) {
             if ( room.type === room_type ) {
-              count++;
+              count++ ;
             }
           });
         }
@@ -107,6 +120,7 @@ define([
 
       return count;
     }
+    // End Model method /getRoomsNumber/
 
   });
 
