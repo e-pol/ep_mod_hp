@@ -19,37 +19,43 @@
 require.config({
   baseUrl : 'js',
   paths   : {
-    jquery     : 'libs/jquery/jquery-1.12.3.min',
-    jquery_ui  : 'libs/jquery/jquery-ui.min',
-    bootstrap  : 'libs/bootstrap/bootstrap.min',
-    underscore : 'libs/underscore/underscore-min',
-    backbone   : 'libs/backbone/backbone-min',
-    text       : 'libs/require/text',
-    json       : 'libs/require/json',
-    ep_mod_hp  : 'modules/ep-mod-house-projects'
+    jquery       : 'libs/jquery/jquery-1.12.3.min',
+    jquery_ui    : 'libs/jquery/jquery-ui.min',
+    plugins      : 'plugins',
+    bootstrap    : 'libs/bootstrap/bootstrap.min',
+    underscore   : 'libs/underscore/underscore-min',
+    backbone     : 'libs/backbone/backbone-min',
+    text         : 'libs/require/text',
+    json         : 'libs/require/json',
+    ep_mod_hp    : 'modules/ep-mod-house-projects',
+    image_viewer : 'plugins/jquery-image-viewer/jquery-image-viewer'
   },
   shim    : {
-    'backbone'   : {
+    'backbone'     : {
       deps    : ['jquery', 'underscore'],
       exports : 'Backbone'
     },
-    'underscore' : {
+    'underscore'   : {
       exports : '_'
     },
-    'bootstrap'  : {
+    'bootstrap'    : {
       deps    : ['jquery'],
       exports : 'bootstrap'
     },
-    'json'       : {
+    'json'         : {
       deps : ['text']
+    },
+    'image_viewer' : {
+      deps : ['jquery']
     }
   }
 });
 
 require([
   'bootstrap',
+  'image_viewer',
   'ep_mod_hp/views/main.view'
-], function ( bootstrap, MainView ) {
+], function ( bootstrap, jqueryImageViewer, MainView ) {
 
   "use strict";
 

@@ -32,7 +32,7 @@ define([
   // ----------------------- END MODULES SCOPE VARIABLES --------------------
 
 
-  // ------------------------ BEGIN MODULE CONSTRUCTORS ---------------------
+  // -------------------------- BEGIN VIEW CONSTRUCTOR ----------------------
 
   ProjectDetailedView = Backbone.View.extend({
     classId : 'EP_MOD_HP_PROJECT_DETAILED_VIEW',
@@ -41,12 +41,16 @@ define([
 
     template : _.template( projectDetailedTemplate ),
 
+    ui : {},
+
     initialize : function ( init_data ) {
       this.setModel( init_data.project_data.project_id );
+      this.$el.addClass( 'ep-mod-hp-project-detailed' );
     },
 
     render : function () {
       this.$el.html( this.template ( this.model.toJSON() ) );
+      this.setImageViewer( this.$( '.ep-mod-hp-jquery-image-viewer' ) );
       return this;
     },
 
@@ -94,13 +98,66 @@ define([
       } );
 
       return project_brief_data;
+    },
+
+    setImageViewer : function () {
+      this.$( '.ep-mod-hp-image-viewer' ).imageViewer({
+        img_paths : [
+          {
+            img       : 'js/modules/ep-mod-house-projects/data/projects/14009/img/project_pb-16_001.jpg',
+            thumb_img : 'js/modules/ep-mod-house-projects/data/projects/14009/img/img001.jpg'
+          },
+          {
+            img       : 'js/modules/ep-mod-house-projects/data/projects/14009/img/img002.jpg',
+            thumb_img : 'js/modules/ep-mod-house-projects/data/projects/14009/img/img002.jpg'
+          },
+          {
+            img       : 'js/modules/ep-mod-house-projects/data/projects/14009/img/img003.jpg',
+            thumb_img : 'js/modules/ep-mod-house-projects/data/projects/14009/img/img003.jpg'
+          }
+        ]
+      });
+    },
+
+    crossFade : function ( map ) {
+      var
+        $img     = map.$img,
+        $current = map.$current;
+
+      if ( $current ) {
+        $current.stop().fadeOut( 'slow' );
+      }
+
+      $img.css({
+        marginLeft : -$img.width() / 2,
+        marginTop  : -$img.height() / 2
+      });
+
+      $img.stop().fadeTo( 'slow', 1 );
+      $current = $img;
+    },
+
+    onClickImageViewThumb : function ( event ) {
+      var
+        target, src, request;
+
+      alert('1');
+
+      event.preventDefault();
+
+      target  = event.target;
+      src     = target.href;
+      request = src;
+
+      console.log( target );
     }
+
   });
 
-  // ------------------------ END MODULE CONSTRUCTORS ----------------------
+  // -------------------------- END VIEW CONSTRUCTOR ------------------------
 
 
-  // Return view constructor
+  // Return View constructor
   return ProjectDetailedView;
 
 });

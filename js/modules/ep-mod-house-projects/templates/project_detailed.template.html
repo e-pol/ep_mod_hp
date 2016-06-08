@@ -1,22 +1,20 @@
 <h2>Проект <%= title %></h2>
 <div class="row clearfix">
-  <div class="col-md-9 pull-left carousel">
-
-  </div>
+  <div class="col-md-9 pull-left ep-mod-hp-image-viewer" ></div>
   <div class="col-md-3 ep-mod-hp-detailed-overview">
     <h3>Общие параметры</h3>
-    <table>
+    <table class="table">
       <tr>
         <td>Площадь</td>
-        <td><%= _model.getFloorsArea() %> м<sup>2</sup></td>
+        <td class="text-center"><%= _model.getFloorsArea() %> м<sup>2</sup></td>
       </tr>
       <tr>
         <td>Спальни</td>
-        <td><%= _model.getRoomsNumber( 'bedroom' ) %> шт</td>
+        <td class="text-center"><%= _model.getRoomsNumber( 'bedroom' ) %> шт</td>
       </tr>
       <tr>
         <td>Санузлы</td>
-        <td><%= _model.getRoomsNumber( 'restroom' ) %> шт</td>
+        <td class="text-center"><%= _model.getRoomsNumber( 'restroom' ) %> шт</td>
       </tr>
     </table>
   </div>
@@ -30,17 +28,17 @@
 
     <% var index = 0; %>
 
-    <h3>Планировка</h3>
+    <h3>Помещения</h3>
 
-    <table>
+    <table class="table">
 
-      <tr>
-        <th>№ п/п</th>
+      <thead class="text-primary">
+        <th class="text-center">№ п/п</th>
         <th>Помещение</th>
-        <th>Площадь, м<sup>2</sup></th>
-      </tr>
+        <th class="text-center">Площадь, м<sup>2</sup></th>
+      </thead>
 
-      <tr>
+      <tr class="text-center small">
         <td>1</td>
         <td>2</td>
         <td>3</td>
@@ -48,8 +46,8 @@
 
       <% for (var floor in floors) { %>
 
-      <tr>
-        <td><%= roman_numerals[ index ] %></td>
+      <tr class="bg-primary">
+        <td class="text-center"><%= roman_numerals[ index ] %></td>
         <td colspan="2">
           <%= value_name[ floor ] %>
         </td>
@@ -57,28 +55,31 @@
 
         <% floors[ floor ].forEach( function ( room, index ) { %>
 
-          <tr>
-            <td><%= index + 1 %></td>
+          <tr class="<%= 'ep-mod-hp-project-detailed-tr-' +
+            ( index%2 === 1 ? 'even' : 'odd' ) %>">
+            <td class="text-center"><%= index + 1 %></td>
             <td><%= value_name[ room.type ] %></td>
-            <td><%= room.area %></td>
+            <td class="text-center"><%= room.area %></td>
           </tr>
 
         <% }); %>
 
-      <tr>
+      <tr class="text-primary">
         <td></td>
-        <td>Итого</td>
-        <td><%= _model.getFloorArea( floor ) %></td>
+        <td><strong>Итого</strong></td>
+        <td class="text-center">
+          <strong><%= _model.getFloorArea( floor ) %></strong>
+        </td>
       </tr>
 
       <% index++; %>
 
       <% } %>
-      <tr>
+      <tfoot class="bg-primary">
         <td></td>
         <td>ВСЕГО</td>
-        <td><%= _model.getFloorsArea() %></td>
-      </tr>
+        <td class="text-center"><%= _model.getFloorsArea() %></td>
+      </tfoot>
 
     </table>
 
@@ -88,16 +89,16 @@
 
     <% index = 0; %>
 
-    <table>
+    <table class="table">
 
-      <tr>
-        <th>№ п/п</th>
+      <thead class="text-primary">
+        <th class="text-center">№ п/п</th>
         <th>Наименование</th>
-        <th>Ед.изм</th>
-        <th>Объем, ед.изм.</th>
-      </tr>
+        <th class="text-center">Ед.изм</th>
+        <th class="text-center">Объем, ед.изм.</th>
+      </thead>
 
-      <tr>
+      <tr class="text-center small">
         <td>1</td>
         <td>2</td>
         <td>3</td>
@@ -107,8 +108,8 @@
 
       <% structures.forEach( function ( structure, index ) { %>
 
-      <tr>
-        <td><%= roman_numerals[ index ] %></td>
+      <tr class="bg-info">
+        <td class="text-center"><%= roman_numerals[ index ] %></td>
         <td colspan="3">
           <%= value_name[ structure.type ] %>
         </td>
@@ -118,16 +119,17 @@
 
       <tr>
         <td></td>
-        <td><%= value_name[ 'variants' ] %></td>
+        <td class="text-info"><%= value_name[ 'variants' ] %></td>
       </tr>
 
           <% structure.variants.forEach( function ( variant, index ) { %>
 
-      <tr>
-        <td><%= index + 1 %></td>
+      <tr class="<%= 'ep-mod-hp-project-detailed-tr-' +
+            ( index%2 === 0 ? 'even' : 'odd' ) %>">
+        <td class="text-center"><%= index + 1 %></td>
         <td><%= value_name[ variant.type ] %></td>
-        <td><%= value_name[ variant.unit ] %></td>
-        <td><%= variant.volume %></td>
+        <td class="text-center"><%= value_name[ variant.unit ] %></td>
+        <td class="text-center"><%= variant.volume %></td>
       </tr>
 
           <% } ); %>
@@ -138,11 +140,12 @@
 
           <% structure.subs.forEach( function ( substructure, index ) { %>
 
-      <tr>
-        <td><%= index + 1 %></td>
+      <tr  class="<%= 'ep-mod-hp-project-detailed-tr-' +
+            ( index%2 === 1 ? 'even' : 'odd' ) %>">
+        <td class="text-center"><%= index + 1 %></td>
         <td><%= value_name[ substructure.type ] %></td>
-        <td><%= value_name[ substructure.unit ] %></td>
-        <td><%= substructure.volume %></td>
+        <td class="text-center"><%= value_name[ substructure.unit ] %></td>
+        <td class="text-center"><%= substructure.volume %></td>
       </tr>
 
           <% } ); %>
