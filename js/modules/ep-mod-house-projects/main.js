@@ -19,36 +19,48 @@
 require.config({
   baseUrl : 'js',
   paths   : {
-    jquery     : 'libs/jquery/jquery-1.12.3.min',
-    bootstrap  : 'libs/bootstrap/bootstrap.min',
-    underscore : 'libs/underscore/underscore-min',
-    backbone   : 'libs/backbone/backbone-min',
-    text       : 'libs/require/text',
-    json       : 'libs/require/json',
-    ep_mod_hp  : 'modules/ep-mod-house-projects'
+    jquery        : 'libs/jquery/jquery-1.12.3.min',
+    jquery_ui     : 'libs/jquery/jquery-ui.min',
+    plugins       : 'plugins',
+    bootstrap     : 'libs/bootstrap/bootstrap.min',
+    underscore    : 'libs/underscore/underscore-min',
+    backbone      : 'libs/backbone/backbone-min',
+    text          : 'libs/require/text',
+    json          : 'libs/require/json',
+    ep_mod_hp     : 'modules/ep-mod-house-projects',
+    image_viewer  : 'libs/jquery/jquery-image-viewer',
+    tabbed_images : 'libs/jquery/jquery-tabbed-images'
   },
   shim    : {
-    'backbone'   : {
+    'backbone'     : {
       deps    : ['jquery', 'underscore'],
       exports : 'Backbone'
     },
-    'underscore' : {
+    'underscore'   : {
       exports : '_'
     },
-    'bootstrap'  : {
+    'bootstrap'    : {
       deps    : ['jquery'],
       exports : 'bootstrap'
     },
-    'json'       : {
+    'json'         : {
       deps : ['text']
+    },
+    'image_viewer' : {
+      deps : ['jquery']
+    },
+    'tabbed_images' : {
+      deps : ['jquery']
     }
   }
 });
 
 require([
   'bootstrap',
+  'image_viewer',
+  'tabbed_images',
   'ep_mod_hp/views/main.view'
-], function ( bootstrap, MainView ) {
+], function ( bootstrap, jqueryImageViewer, jqueryTabbedImages, MainView ) {
 
   "use strict";
 

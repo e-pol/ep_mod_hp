@@ -15,8 +15,8 @@
  */
 
 define([
-  'backbone'
-], function ( Backbone ) {
+  'ep_mod_hp/models/abstract.model'
+], function ( AbstractModel ) {
 
   "use strict";
 
@@ -30,15 +30,13 @@ define([
 
   // ------------------------ BEGIN MODULE CONSTRUCTORS ---------------------
 
-  ProjectsBriefModel = Backbone.Model.extend({
-    classId : 'EP_MOD_HP_PROJECT_BRIEF_MODEL',
+  ProjectsBriefModel = AbstractModel.extend({
+    classId    : 'EP_MOD_HP_PROJECT_BRIEF_MODEL',
+
     initialize : function () {
-
-      // ------------ BEGIN DEVELOP ONLY -------------
-      console.log( this.classId + ' initiated...' );
-      // ------------- END DEVELOP ONLY --------------
-
+      this.setValueNames();
     }
+
   });
 
   // ------------------------ END MODULE CONSTRUCTORS ----------------------
