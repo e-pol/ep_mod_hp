@@ -3,70 +3,15 @@
   "version": "0.0.1",
   "project_list" : [
     {
-      "id"        : "14009",
-      "path"      : "data/projects/14009",
-      "title"     : "ПБ-14.009",
-      "type"      : "house",
-      "tech"      : "laften",
-      "area"      : 90,
-      "floors"    : 1,
-      "realized"  : "2015-январь",
-      "thumb_img" : "project_pb-16_001.jpg"
-    },
-    {
-      "id"        : "15001",
-      "path"      : "data/projects/15001",
-      "title"     : "ПБ-15.001",
-      "type"      : "house",
-      "tech"      : "profiled-beam",
-      "area"      : 120,
-      "floors"    : 1,
-      "realized"  : "2015-июнь",
-      "thumb_img" : "project_pb-16_001.jpg"
-    },
-    {
-      "id"        : "15002",
-      "path"      : "data/projects/15002",
-      "title"     : "ПБ-15.002",
-      "type"      : "house",
-      "tech"      : "laften",
-      "area"      : 180,
-      "floors"    : 2,
-      "realized"  : "2015-август",
-      "thumb_img" : "project_pb-16_001.jpg"
-    },
-    {
-      "id"        : "15003",
-      "path"      : "data/projects/15003",
-      "title"     : "ПБ-15.003",
-      "type"      : "house",
-      "tech"      : "profiled-beam",
-      "area"      : 210,
-      "floors"    : 2,
-      "realized"  : "2015-октябрь",
-      "thumb_img" : "project_pb-16_001.jpg"
-    },
-    {
-      "id"        : "16001",
-      "path"      : "data/projects/16001",
-      "title"     : "ПБ-16.001",
-      "type"      : "bath-house",
-      "tech"      : "profiled-beam",
-      "area"      : 40,
-      "floors"    : 1,
-      "realized"  : "in-progress",
-      "thumb_img" : "project_pb-16_001.jpg"
-    },
-    {
-      "id"        : "16002",
-      "path"      : "data/projects/16001",
-      "title"     : "ПБ-16.002",
+      "id"        : "16010",
+      "path"      : "data/projects/16010",
+      "title"     : "ПБ-16.010",
       "type"      : "bath-house",
       "tech"      : "profiled-beam",
       "area"      : 45,
       "floors"    : 1,
       "realized"  : "2016-февраль",
-      "thumb_img" : "project_pb-16_001.jpg"
+      "thumb_img" : "3d_view_01.jpg"
     }
   ]
 }

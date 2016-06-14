@@ -50,7 +50,7 @@ define([
     template : _.template( mainTemplate ),
 
     initialize : function() {
-      this.$el.addClass('container');
+      this.$el.addClass( 'container' );
 
       this.render();
 
@@ -60,6 +60,8 @@ define([
       this.listenTo( this.router, 'requestProject', this.onRequestRouteProject );
 
       Backbone.history.start();
+
+      this.$el.removeClass( 'mod-is-loading' );
 
     },
 
@@ -123,8 +125,6 @@ define([
         route = 'project/' + data;
       }
 
-      console.log( route );
-
       this.router.navigate( route, { trigger : true } );
   },
 
@@ -149,8 +149,6 @@ define([
     },
 
     onRequestRouteProject : function ( data ) {
-      console.log( 'mainView : "onRequestRouteProject"', data );
-
       this.initProjectDetailedView( data );
 
       if ( this.projectsView ) {

@@ -18,9 +18,11 @@ define([
   'backbone',
   'ep_mod_hp/models/project_detailed.model',
   'text!ep_mod_hp/templates/project_detailed.template.html',
-  'json!ep_mod_hp/data/projects.json'
+  'json!ep_mod_hp/data/projects.json',
+  'json!ep_mod_hp/config/config.json'
 ], function ( Backbone, ProjectDetailedModel,
-              projectDetailedTemplate, projectsData ) {
+              projectDetailedTemplate, projectsData,
+              config ) {
 
   "use strict";
 
@@ -50,7 +52,8 @@ define([
 
     render : function () {
       this.$el.html( this.template ( this.model.toJSON() ) );
-      this.setImageViewer( this.$( '.ep-mod-hp-jquery-image-viewer' ) );
+      this.setImageViewer();
+      this.setTabbedImages();
       return this;
     },
 
@@ -86,6 +89,21 @@ define([
       });
     },
 
+    setTabbedImages : function () {
+      this.$( '.ep-mod-hp-jquery-tabbed-images' ).tabbedImages({
+        img_list : [
+          {
+            "title"    : "I этаж",
+            "main_img" : "js/modules/ep-mod-house-projects/data/projects/16010/img/floor_01.jpg"
+          },
+          {
+            "title"    : "II этаж",
+            "main_img" : "js/modules/ep-mod-house-projects/data/projects/16010/img/floor_02.jpg"
+          }
+        ]
+      });
+    },
+
     getProjectBriefData : function ( project_id ) {
       var project_list, project_brief_data;
 
@@ -101,55 +119,24 @@ define([
     },
 
     setImageViewer : function () {
+      var
+        image_list   = this.model.get( 'images' ),
+        mod_path     = config.mod_path,
+        model_id     = this.model.get( 'id' ),
+        images_path  = mod_path + '/data/projects/' + model_id + '/img/',
+        img_paths    = [];
+
+      image_list.forEach( function( img_map ) {
+        img_paths.push({
+          main_img  : images_path + img_map.main_img,
+          thumb_img : images_path + img_map.thumb_img
+        });
+      });
+
       this.$( '.ep-mod-hp-image-viewer' ).imageViewer({
-        img_paths : [
-          {
-            img       : 'js/modules/ep-mod-house-projects/data/projects/14009/img/project_pb-16_001.jpg',
-            thumb_img : 'js/modules/ep-mod-house-projects/data/projects/14009/img/img001.jpg'
-          },
-          {
-            img       : 'js/modules/ep-mod-house-projects/data/projects/14009/img/img002.jpg',
-            thumb_img : 'js/modules/ep-mod-house-projects/data/projects/14009/img/img002.jpg'
-          },
-          {
-            img       : 'js/modules/ep-mod-house-projects/data/projects/14009/img/img003.jpg',
-            thumb_img : 'js/modules/ep-mod-house-projects/data/projects/14009/img/img003.jpg'
-          }
-        ]
+        img_paths       : img_paths,
+        main_img_height : 500
       });
-    },
-
-    crossFade : function ( map ) {
-      var
-        $img     = map.$img,
-        $current = map.$current;
-
-      if ( $current ) {
-        $current.stop().fadeOut( 'slow' );
-      }
-
-      $img.css({
-        marginLeft : -$img.width() / 2,
-        marginTop  : -$img.height() / 2
-      });
-
-      $img.stop().fadeTo( 'slow', 1 );
-      $current = $img;
-    },
-
-    onClickImageViewThumb : function ( event ) {
-      var
-        target, src, request;
-
-      alert('1');
-
-      event.preventDefault();
-
-      target  = event.target;
-      src     = target.href;
-      request = src;
-
-      console.log( target );
     }
 
   });

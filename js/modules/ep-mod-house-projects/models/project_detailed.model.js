@@ -87,6 +87,58 @@ define([
     },
     // End Model method /getFloorsArea/
 
+    // Begin Model method /getDesignTotalCost/
+    //
+    // Example   : model.getDesignTotalCost()
+    // Purpose   : calculate design total cost
+    // Arguments : none
+    // Action    :
+    //   * store sections maps
+    //   * sum up sections cost
+    // Return    : design total cost
+    // Throws    : none
+    //
+    getDesignTotalCost : function () {
+      var
+        sections = this.get( 'design' ),
+        total_cost = 0,
+        section;
+
+      for (section in sections) {
+        if ( sections.hasOwnProperty( section ) ) {
+          total_cost += this.getSectionCost( section );
+        }
+      }
+
+      return total_cost;
+    },
+    // End Model method /getDesignTotalCost/
+
+    // Begin Model method /getSectionCost/
+    //
+    // Example   : model.getSectionCost( 'architect' )
+    // Purpose   : calculate section subcost
+    // Arguments :
+    //    * section_name
+    // Action    :
+    //   * store section map
+    //   * sum up section work types cost
+    // Return    : section subcost
+    // Throws    : none
+    //
+    getSectionCost : function ( section_name ) {
+      var
+        section = this.get( 'design' )[ section_name ],
+        section_cost = 0;
+
+      section.forEach( function ( work_type ) {
+        section_cost += work_type.cost;
+      } );
+
+      return section_cost;
+    },
+    // End Model method /getSectionCost/
+
     // Begin Model method /getRoomsNumber/
     //
     // Example   : model.getRoomsNumber( 'bedroom' )

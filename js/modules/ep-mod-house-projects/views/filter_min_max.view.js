@@ -86,6 +86,12 @@ define([
       event_selector = 'blur ' + this.ui.minVal;
       events_hash[ event_selector ] = 'onBlurMin';
 
+      event_selector = 'blur ' + this.ui.maxVal;
+      events_hash[ event_selector ] = 'onBlurMax';
+
+      event_selector = 'click' + this.ui.slider;
+      events_hash[ event_selector ] = 'onClickSlider';
+
       this.delegateEvents( events_hash );
     },
     // End View method /setEvents/
@@ -145,6 +151,19 @@ define([
     onBlurMax : function ( event ) {
       event.preventDefault();
       this.setMax( event );
+    },
+
+    onClickSlider : function () {
+      var min, max, values;
+      event.preventDefault();
+
+      values = this.$slider.slider( 'values' );
+      min = values[ 0 ];
+      max = values[ 1 ];
+      this.$( this.ui.minVal ).val( min );
+      this.$( this.ui.maxVal ).val( max );
+
+      this.onChangeSlider();
     },
 
     // Begin View method /onKeypressMin/

@@ -110,7 +110,32 @@ define([
       }
 
       return result;
+    },
+
+    // Begin Model method /n2f/
+    //
+    // Purpose : separate number into spaced groups by 3
+    n2s : function( number, separator ) {
+      var
+        str = '',
+        len;
+
+      number = number.toString().split('');
+      len = number.length;
+
+      number.forEach( function( number, index ) {
+        if ( len > 3
+          && ( index === ( len - 3 )
+            || index === ( len - 6 ) ) ) {
+          str += ' ';
+        }
+        str += number;
+      }, ' ' );
+
+      return str;
     }
+    // Enf Model method /n2s/
+    
   });
 
   // ------------------------ END MODULE CONSTRUCTORS ----------------------

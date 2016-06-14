@@ -19,16 +19,17 @@
 require.config({
   baseUrl : 'js',
   paths   : {
-    jquery       : 'libs/jquery/jquery-1.12.3.min',
-    jquery_ui    : 'libs/jquery/jquery-ui.min',
-    plugins      : 'plugins',
-    bootstrap    : 'libs/bootstrap/bootstrap.min',
-    underscore   : 'libs/underscore/underscore-min',
-    backbone     : 'libs/backbone/backbone-min',
-    text         : 'libs/require/text',
-    json         : 'libs/require/json',
-    ep_mod_hp    : 'modules/ep-mod-house-projects',
-    image_viewer : 'plugins/jquery-image-viewer/jquery-image-viewer'
+    jquery        : 'libs/jquery/jquery-1.12.3.min',
+    jquery_ui     : 'libs/jquery/jquery-ui.min',
+    plugins       : 'plugins',
+    bootstrap     : 'libs/bootstrap/bootstrap.min',
+    underscore    : 'libs/underscore/underscore-min',
+    backbone      : 'libs/backbone/backbone-min',
+    text          : 'libs/require/text',
+    json          : 'libs/require/json',
+    ep_mod_hp     : 'modules/ep-mod-house-projects',
+    image_viewer  : 'libs/jquery/jquery-image-viewer',
+    tabbed_images : 'libs/jquery/jquery-tabbed-images'
   },
   shim    : {
     'backbone'     : {
@@ -47,6 +48,9 @@ require.config({
     },
     'image_viewer' : {
       deps : ['jquery']
+    },
+    'tabbed_images' : {
+      deps : ['jquery']
     }
   }
 });
@@ -54,8 +58,9 @@ require.config({
 require([
   'bootstrap',
   'image_viewer',
+  'tabbed_images',
   'ep_mod_hp/views/main.view'
-], function ( bootstrap, jqueryImageViewer, MainView ) {
+], function ( bootstrap, jqueryImageViewer, jqueryTabbedImages, MainView ) {
 
   "use strict";
 
