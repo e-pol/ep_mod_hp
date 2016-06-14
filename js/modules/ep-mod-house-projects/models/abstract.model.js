@@ -70,6 +70,9 @@ define([
     },
     // End Abstract Model method /setFilterKeyName/
 
+    // Begin Model method /setValueNames/
+    //
+    // Purpose : make filter model values readable for user
     setFilterValueNames : function () {
       var key_name, changeable_key_list, prev_value_list, rev_value_list;
 
@@ -92,11 +95,17 @@ define([
       this.set({ value_names : rev_value_list });
     },
 
+    // Begin Model method /setValueNames/
+    //
+    // Purpose : make model values readable for user
     setValueNames : function () {
       var value_name = lang[ stateMap.lang ].value_name;
       this.set({ value_name : value_name });
     },
 
+    // Begin Model method /toJSON/
+    //
+    // Purpose : translates values to different languages
     toJSON : function () {
       var
         result = { _lang : {} },

@@ -3,15 +3,26 @@
   "version": "0.0.1",
   "project_list" : [
     {
+      "id"        : "16002",
+      "path"      : "data/projects/16002",
+      "title"     : "ПБ-16.002",
+      "type"      : "bath-house",
+      "tech"      : "profiled-beam",
+      "area"      : 48.4,
+      "floors"    : 1,
+      "realized"  : "2016-март",
+      "thumb_img" : "3d_view_01_md.jpg"
+    },
+    {
       "id"        : "16010",
       "path"      : "data/projects/16010",
       "title"     : "ПБ-16.010",
       "type"      : "bath-house",
       "tech"      : "profiled-beam",
-      "area"      : 45,
-      "floors"    : 1,
-      "realized"  : "2016-февраль",
-      "thumb_img" : "3d_view_01.jpg"
+      "area"      : 85.9,
+      "floors"    : 2,
+      "realized"  : "2016-июль",
+      "thumb_img" : "3d_view_01_md.jpg"
     }
   ]
 }

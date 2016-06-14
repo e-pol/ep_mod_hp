@@ -90,17 +90,25 @@ define([
     },
 
     setTabbedImages : function () {
+      var
+        floor_list   = this.model.get( 'floor_plans' ),
+        mod_path     = config.mod_path,
+        model_id     = this.model.get( 'id' ),
+        images_path  = mod_path + '/data/projects/' + model_id + '/img/',
+        img_paths    = [],
+        floor;
+
+      floor_list.forEach( function ( floor ) {
+        img_paths.push({
+          title    : this.model.get( 'value_name' )[ floor.title ],
+          main_img : images_path + floor.main_img
+        });
+      }, this );
+
+      console.log( img_paths );
+
       this.$( '.ep-mod-hp-jquery-tabbed-images' ).tabbedImages({
-        img_list : [
-          {
-            "title"    : "I этаж",
-            "main_img" : "js/modules/ep-mod-house-projects/data/projects/16010/img/floor_01.jpg"
-          },
-          {
-            "title"    : "II этаж",
-            "main_img" : "js/modules/ep-mod-house-projects/data/projects/16010/img/floor_02.jpg"
-          }
-        ]
+        img_list : img_paths
       });
     },
 
