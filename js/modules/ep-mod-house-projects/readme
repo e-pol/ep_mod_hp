@@ -51,3 +51,7 @@ I. User driven workflows
          Models )
 3.4.2.   Projects View, listening to 'reset' of its Collection, renders changed
          Collection.
+
+II. Anchor interface module state management
+
+1.

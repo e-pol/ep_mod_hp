@@ -267,7 +267,17 @@ define([
 
         attr[key] = value;
 
-        temp_collection.add( collection.where( attr ) );
+        temp_collection.add( collection.filter( function ( project_model ) {
+          var model_value = project_model.get( key );
+
+          if ( ! Array.isArray( model_value ) ) {
+            return model_value === value;
+          }
+          else {
+            return model_value.indexOf( value ) >= 0;
+          }
+        } ) );
+
       }, this );
 
       collection.reset( temp_collection.models );

@@ -20,7 +20,7 @@
     {
       "filter_type" : "simple",
       "key"         : "tech",
-      "values"      : [ "profiled-beam", "laften" ]
+      "values"      : [ "profiled-beam", "laften", "aerated-concrete" ]
     }
   ]
 }

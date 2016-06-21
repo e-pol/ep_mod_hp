@@ -114,6 +114,35 @@ define([
     },
     // End Model method /getDesignTotalCost/
 
+    // Begin Model method /getRoomArea/
+    //
+    // Example   : model.getRoomArea()
+    // Purpose   : get room area
+    // Arguments :
+    //   * floor_id  - floor to which a room belongs
+    //   * room_type - type of room to find
+    // Action    :
+    //   * get list of all the rooms from the floor
+    //   * find respective room area
+    //   * return requested area
+    // Return    : room area
+    // Throws    : none
+    //
+    getRoomArea : function ( floor_id, room_type ) {
+      var
+        room_list = this.get( 'floors' )[ floor_id ],
+        room_area;
+
+      room_list.forEach( function ( room_map ) {
+        if ( room_map.type === room_type ) {
+          room_area = room_map.area;
+        }
+      } );
+
+      return room_area;
+    },
+    // End Model method /getRoomArea/
+
     // Begin Model method /getSectionCost/
     //
     // Example   : model.getSectionCost( 'architect' )

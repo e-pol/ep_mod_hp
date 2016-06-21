@@ -8,14 +8,42 @@
         <td>Площадь</td>
         <td class="text-center"><%= _model.getFloorsArea().toFixed(1) %> м<sup>2</sup></td>
       </tr>
+
+      <% if ( _model.getRoomsNumber( 'bedroom' ) > 0 ) { %>
       <tr>
         <td>Спальни</td>
         <td class="text-center"><%= _model.getRoomsNumber( 'bedroom' ) %> шт</td>
       </tr>
+      <% } %>
+
+      <% if ( _model.getRoomsNumber( 'lavatory' ) > 0 ) { %>
       <tr>
         <td>Санузлы</td>
+        <td class="text-center"><%= _model.getRoomsNumber( 'lavatory' ) %> шт</td>
+      </tr>
+      <% } %>
+
+      <% if ( _model.getRoomsNumber( 'restroom' ) > 0 ) { %>
+      <tr>
+        <td>Туалеты</td>
         <td class="text-center"><%= _model.getRoomsNumber( 'restroom' ) %> шт</td>
       </tr>
+      <% } %>
+
+      <% if ( _model.getRoomsNumber( 'steam-room' ) > 0 ) { %>
+      <tr>
+        <td>Парная</td>
+        <td class="text-center"><%= _model.getRoomArea( "floor_01", "steam-room" ) %> м<sup>2</sup></td>
+      </tr>
+      <% } %>
+
+      <% if ( _model.getRoomsNumber( 'shower-room' ) > 0 ) { %>
+      <tr>
+        <td>Помывочная</td>
+        <td class="text-center"><%= _model.getRoomArea( "floor_01", "shower-room" ) %> м<sup>2</sup></td>
+      </tr>
+      <% } %>
+
     </table>
   </div>
 </div>

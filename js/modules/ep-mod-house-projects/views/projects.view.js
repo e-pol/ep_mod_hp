@@ -40,7 +40,16 @@ define([
       container : {
         filtersView     : '#ep-mod-hp-filters',
         projectsGallery : '#ep-mod-hp-collection-gallery'
-      }
+      },
+      do_pagination : true,
+      page_size     : 12,
+      page_num      : 1
+    },
+
+    stateMap = {
+      do_pagination : null,
+      page_size     : null,
+      page_num      : null
     },
 
     ProjectsView;
@@ -72,8 +81,11 @@ define([
           state_map         = init_data.data.state_map;
           filters_state_map = state_map.filter;
         }
-
       }
+
+      stateMap.do_pagination = configMap.do_pagination;
+      stateMap.page_size     = configMap.page_size;
+      stateMap.page_num      = configMap.page_num;
 
       this.collection = new ProjectsBriefCollection( null, {
         projects_data     : projectsData,
@@ -105,7 +117,6 @@ define([
     // Throws    : none
     //
     render : function () {
-
       this.$el.html( this.template );
 
       this.filtersView = new FiltersView({
@@ -129,10 +140,19 @@ define([
     // Throws    : none
     //
     renderProjects : function () {
+      var project_list;
+
       this.$( configMap.container.projectsGallery ).empty();
 
-      this.collection.each( function( project_model ) {
-        this.renderProject( project_model );
+      if ( stateMap.do_pagination ) {
+        project_list = this.getPaginatedProjects( this.collection );
+      }
+      else {
+        project_list = this.collection.models;
+      }
+
+      project_list.forEach( function( project_model ) {
+          this.renderProject( project_model );
       }, this );
     },
     // End View method /renderProjects/
@@ -293,8 +313,41 @@ define([
       $anchor_elem = $( elem ).parents( 'a' );
       project_id = $anchor_elem.attr( 'href' ).slice(1);
       this.trigger( 'requestDetailedProject', project_id );
-    }
+    },
     // End View method /onClickProject/
+
+    // Begin View method /getPaginatedProjects/
+    //
+    // Example   : view.getPaginatedProjects( this.collection )
+    // Purpose   : get subset of projects that satisfy pagination requirements
+    // Arguments :
+    //   * collection - collection with all the projects to select from
+    // Action    :
+    //   * define first and last indexes of projects in collection
+    //   * if last project index is greater than collection length, make it
+    //     equal that length minus one
+    //   * get selected subset of projects (as array)
+    //   * return it
+    // Return    : array of selected projects
+    // Throws    : none
+    //
+    getPaginatedProjects : function ( collection ) {
+      var
+        first_project_index = ( stateMap.page_num - 1 ) * stateMap.page_size,
+        last_project_index  = stateMap.page_num * stateMap.page_size - 1,
+        rev_project_list;
+
+      if ( last_project_index > collection.length - 1 ) {
+        last_project_index = collection.length - 1;
+      }
+
+      rev_project_list = collection.models.slice(
+        first_project_index, last_project_index + 1
+      );
+
+      return rev_project_list;
+    }
+    // End View method /getPaginatedProjects/
   });
 
   // ------------------------ END MODULE CONSTRUCTORS ----------------------

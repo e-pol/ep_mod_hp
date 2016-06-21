@@ -1,3 +1,21 @@
+/* BREADCRUMBS */
+
+.ep-mod-hp-breadcrumbs a {
+  margin-right: 0.75em;
+  color: inherit;
+}
+
+.ep-mod-hp-breadcrumbs li:not(:last-child):after {
+  content: '>'
+}
+
+.ep-mod-hp-breadcrumbs li:last-child a {
+  pointer-events: none;
+  cursor: default;
+}
+
+/* PROJECTS */
+
 .ep-mod-hp-filters {
   padding : 3em 2em 2em 2em;
 }

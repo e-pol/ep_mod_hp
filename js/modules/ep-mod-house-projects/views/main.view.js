@@ -17,12 +17,15 @@
 define([
   'backbone',
   'ep_mod_hp/routers/router',
+  'ep_mod_hp/views/breadcrumbs.view',
   'ep_mod_hp/views/projects.view',
   'ep_mod_hp/views/project_detailed.view',
   'json!ep_mod_hp/config/config.json',
+  'json!ep_mod_hp/data/projects.json',
   'text!ep_mod_hp/templates/main.template.html'
-  ], function ( Backbone, Router, ProjectsView, ProjectDetailedView,
-                config, mainTemplate ) {
+  ], function ( Backbone, Router,
+                BreadcrumbsView, ProjectsView, ProjectDetailedView,
+                config, projects, mainTemplate ) {
   "use strict";
 
 
@@ -31,6 +34,7 @@ define([
   var
     configMap = {
       container : {
+        breadcrumbsView     : "#ep-mod-hp-breadcrumbs",
         projectsView        : '#ep-mod-hp-projects',
         projectDetailedView : '#ep-mod-hp-project-detailed'
       }
@@ -54,8 +58,13 @@ define([
 
       this.render();
 
+      this.breadcrumbs = new BreadcrumbsView({
+        el   : this.$( configMap.container.breadcrumbsView )
+      });
+      
       this.router = new Router();
 
+      this.listenTo( this.breadcrumbs, 'all', this.onTriggerBreadcrumbs );
       this.listenTo( this.router, 'requestProjects', this.onRequestRouteProjects );
       this.listenTo( this.router, 'requestProject', this.onRequestRouteProject );
 
@@ -79,6 +88,19 @@ define([
     // Throws    : none
     //
     initProjectsView : function ( data ) {
+      this.breadcrumbs.setPath({
+        path : [
+          {
+            name : 'landing',
+            text : 'главная'
+          },
+          {
+            name : 'projects',
+            text : 'проекты'
+          }
+        ]
+      });
+
       this.projectsView = new ProjectsView({
         el   : this.$( configMap.container.projectsView ),
         data : data
@@ -92,6 +114,23 @@ define([
     },
 
     initProjectDetailedView : function ( project_id ) {
+      this.breadcrumbs.setPath({
+        path : [
+          {
+            name : 'landing',
+            text : 'главная'
+          },
+          {
+            name : 'projects',
+            text : 'проекты'
+          },
+          {
+            name : 'project/16001',
+            text : 'ПБ-16.001'
+          }
+        ]
+      });
+
       this.projectDetailedView = new ProjectDetailedView({
         el           : this.$( configMap.container.projectDetailedView ),
         project_data : { project_id : project_id }
@@ -99,11 +138,11 @@ define([
     },
 
     onChangeState : function ( state_str ) {
-      if ( ! state_str ) {
+/*      if ( state_str === null ) {
         return;
-      }
+      }*/
 
-      if ( state_str === 'reset' ) {
+      if ( state_str === 'reset' || state_str === null ) {
         this.router.navigate( 'projects' );
         return;
       }
@@ -131,10 +170,16 @@ define([
     onRequestRouteProjects : function ( data ) {
       var state_map = null;
 
+      console.log( data );
+
       if ( data !== this.prev_projects_view_data ) {
         this.prev_projects_view_data = data;
         state_map = this.stateDataToJSON( data );
         this.initProjectsView( { state_map : state_map } );
+      }
+
+      if ( data === null ) {
+        this.prev_projects_view_data = null;
       }
 
       if ( this.projectDetailedView ) {
@@ -156,6 +201,12 @@ define([
       }
 
       this.projectDetailedView.$el.show();
+    },
+
+    onTriggerBreadcrumbs : function ( data ) {
+
+      console.log( data );
+      console.log( this.prev_projects_view_data );
     },
 
     stateDataToJSON : function ( state_data ) {

@@ -105,8 +105,6 @@ define([
         });
       }, this );
 
-      console.log( img_paths );
-
       this.$( '.ep-mod-hp-jquery-tabbed-images' ).tabbedImages({
         img_list : img_paths
       });
